@@ -8,13 +8,23 @@
 ##### Author: Pedro Henrique Vasconcellos
 ##### Site: https://vasconcellos.solutions
 
-Usege tips.
+#### Note.
 - Use the [FipeVehicleTypesEnum] enumerator to say what type of vehicle you want to search for.
 - Types of vehicles contained in the enumerator [FipeVehicleTypesEnum] (Car = 1, Motorcycle = 2, TruckAndMicroBus = 3)
 - If the (referenceCode == 0), the most current reference will be used, that is, the most current data from the fipe table.
 - Warning: Do not call more than one FIPE library download service method in parallel, as the Proxy FIPE will block your IP for a certain time (5-10 minutes maybe).
 - If you want to create the tables in the relational database [MSSQL / SqlServer], there are SQL scripts in the directory=[/Vasconcellos.FipeTable.Database/Tables/].
 - if you see [Vehicle.Year=32000] want say that the vehicle is zero KM.
+
+#### Library to download the data from the fipe table through FIPE's WebAPI
+###### Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.DownloadService
+###### Nuget Package Manager: Install-Package Vasconcellos.FipeTable.DownloadService
+###### Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.DownloadService
+
+##### Library with the entities for the use of vehicle data from the fipe table
+###### Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.Types
+###### Nuget Package Manager: Install-Package Vasconcellos.FipeTable.Types
+###### Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.Types
 
 Example of using the FIPE table library.
 ```csharp
@@ -57,7 +67,7 @@ public class Example()
 }
 ```
 
-Method [GetExample] return object.
+Object to be consumed.
 ```csharp
 using System.Collections.Generic;
 using Vasconcellos.FipeTable.Types.Entities;
