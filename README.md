@@ -60,7 +60,7 @@ public class Example()
         this._normalizedDownloadService = new FipeNormalizedDownloadService(this._logger, this._downloadService);
     }
 
-    public GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 0)
+    public NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 0)
     {
         var result = this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
         if(result.VehicleType == vehicleType && result.ReferenceCode == referenceCode
