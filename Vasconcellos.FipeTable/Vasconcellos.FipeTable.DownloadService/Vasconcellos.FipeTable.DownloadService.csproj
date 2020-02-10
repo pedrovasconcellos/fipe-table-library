@@ -20,6 +20,8 @@
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Infra\Interfaces\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Models\NormalizedDownloads\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\FipeVehicleInformationInnerJoinVehicleModel.cs" />

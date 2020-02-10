@@ -1,4 +1,4 @@
-CREATE TABLE dbo.FipeVehicleType
+CREATE TABLE FipeVehicleType
 (
     Id SMALLINT NOT NULL PRIMARY KEY,
     [Description] VARCHAR(30) NOT NULL,

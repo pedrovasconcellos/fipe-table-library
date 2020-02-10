@@ -49,26 +49,26 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Responses
         /// </summary>
         public string SiglaCombustivel { get; set; }
         /// <summary>
-        /// Date and time the vehicle information was consulted
+        /// Date and time the vehicle information was consulted.
         /// </summary>
         public string DataConsulta { get; set; }
 
         #region NotUsedInDeserialization
         public int ReferenceCode { get; set; }
-        public long BrandId { get; set; }
-        public long ModelId { get; set; }
+        public string BrandId { get; set; }
+        public string ModelId { get; set; }
         public FipeVehicleFuelTypesEnum FipeVehicleFuelTypeId { get; set; }
         public VehicleFuelTypesEnum VehicleFuelTypeId { get => GetVehicleFuelTypeEnum(); }
         public short Year { get; set; }
         public DateTime Created { get; private set; }
-        public double Value { get => Convert.ToDouble(this.Valor?.Substring(2)?.Replace(".", "").Replace(",", ".")); }
+        public decimal Value { get => Convert.ToDecimal(this.Valor?.Substring(2)?.Replace(".", "").Replace(",", ".")); }
         #endregion NotUsedInDeserialization
 
         internal void SetAdditionalInformation(int referenceCode, Brand brand, Model model, YearAndFuel yearAndFuel)
         {
             this.ReferenceCode = referenceCode;
-            this.BrandId = Convert.ToInt64(brand?.Value);
-            this.ModelId = Convert.ToInt64(model?.Value);
+            this.BrandId = brand.Value;
+            this.ModelId = model.Value;
             this.Year = yearAndFuel.Year;
             this.FipeVehicleFuelTypeId = yearAndFuel.Fuel;
         }

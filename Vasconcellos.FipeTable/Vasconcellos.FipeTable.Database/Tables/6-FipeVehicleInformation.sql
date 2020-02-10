@@ -1,4 +1,4 @@
-CREATE TABLE dbo.FipeVehicleInformation
+CREATE TABLE FipeVehicleInformation
 (
     Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     FipeCode VARCHAR(30) NOT NULL,
@@ -7,23 +7,23 @@ CREATE TABLE dbo.FipeVehicleInformation
     FipeVehicleFuelTypeId SMALLINT NOT NULL,
     VehicleFuelTypeId SMALLINT NOT NULL,
     [Value] FLOAT NOT NULL,
-    FipeReferenceId INT NOT NULL, 
+    FipeReferenceCode INT NOT NULL, 
     [Authentication] VARCHAR(30) NOT NULL,
     Created DATETIME NOT NULL,
     Updated DATETIME NULL,
     Active BIT NOT NULL DEFAULT(1)
 )
 
-ALTER TABLE [dbo].[FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_FipeVehicleModel] 
-FOREIGN KEY([FipeVehicleModelId]) REFERENCES [dbo].[FipeVehicleModel] ([Id])
+ALTER TABLE [FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_FipeVehicleModel] 
+FOREIGN KEY([FipeVehicleModelId]) REFERENCES [FipeVehicleModel] ([Id])
 
-ALTER TABLE [dbo].[FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_FipeVehicleFuelType] 
-FOREIGN KEY([FipeVehicleFuelTypeId]) REFERENCES [dbo].[FipeVehicleFuelType] ([Id])
+ALTER TABLE [FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_FipeVehicleFuelType] 
+FOREIGN KEY([FipeVehicleFuelTypeId]) REFERENCES [FipeVehicleFuelType] ([Id])
 
-ALTER TABLE [dbo].[FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_VehicleFuelType] 
-FOREIGN KEY([VehicleFuelTypeId]) REFERENCES [dbo].[VehicleFuelType] ([Id])
+ALTER TABLE [FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_VehicleFuelType] 
+FOREIGN KEY([VehicleFuelTypeId]) REFERENCES [VehicleFuelType] ([Id])
 
-CREATE UNIQUE NONCLUSTERED INDEX [IX_FipeVehicleInformation] ON [dbo].[FipeVehicleInformation]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_FipeVehicleInformation] ON [FipeVehicleInformation]
 (
     [FipeVehicleModelId] ASC,
     [Year] DESC,

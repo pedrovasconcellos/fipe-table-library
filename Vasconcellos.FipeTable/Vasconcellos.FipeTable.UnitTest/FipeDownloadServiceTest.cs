@@ -14,43 +14,43 @@ namespace Vasconcellos.FipeTable.UnitTest
         private readonly ILogger _logger;
         private readonly IHttpRequestSettings _httpRequestSettings;
         private readonly IHttpRequest _httpRequest;
-        private readonly IFipeDownloadService _fipeDownloadService;
+        private readonly IFipeDownloadService _downloadService;
 
         public FipeDownloadServiceTest()
         {
             this._logger = new LoggerFactory().CreateLogger(nameof(FipeDownloadServiceTest));
             this._httpRequestSettings = new HttpRequestSettings();
             this._httpRequest = new HttpRequest(this._logger, this._httpRequestSettings);
-            this._fipeDownloadService = new FipeDownloadService(this._logger, this._httpRequest);
+            this._downloadService = new FipeDownloadService(this._logger, this._httpRequest);
         }
 
         [Fact]
         public void DownloadListReferenceCodeFipeTableTest()
         {
-            var referencesCodes = this._fipeDownloadService.GetListReferenceCodeFipeTable();
+            var referencesCodes = this._downloadService.GetListReferenceCodeFipeTable();
             Assert.True(referencesCodes != null && referencesCodes.Count > 0, "Error while downloading list Fipe reference code!");
         }
 
         [Fact]
         public void DownloadFipeRefenrenceIdTest()
         {
-            var referenceCode = this._fipeDownloadService.GetFipeTableReferenceCode(245);
+            var referenceCode = this._downloadService.GetFipeTableReferenceCode(245);
             Assert.True(referenceCode == 245, "Error while downloading Fipe reference code!");
         }
 
         [Fact]
         public void DownloadFipeVehicleBrandsTest()
         {
-            var referenceCode = this._fipeDownloadService.GetFipeTableReferenceCode();
+            var referenceCode = this._downloadService.GetFipeTableReferenceCode();
             var fipeTable = new FipeDataTable(referenceCode, FipeVehicleTypesEnum.Car);
-            this._fipeDownloadService.GetBrands(fipeTable);
+            this._downloadService.GetBrands(fipeTable);
             Assert.True(fipeTable.Brands.Count > 0, "Error downloading vehicle brands!");
         }
 
         [Fact]
         public void DownloadFipeVehicleModelsTest()
         {
-            var referenceCode = this._fipeDownloadService.GetFipeTableReferenceCode();
+            var referenceCode = this._downloadService.GetFipeTableReferenceCode();
             var fipeTable = new FipeDataTable(referenceCode, FipeVehicleTypesEnum.Car);
 
             fipeTable.Brands.Add(new Brand()
@@ -58,14 +58,14 @@ namespace Vasconcellos.FipeTable.UnitTest
                 Value = "1"
             });
 
-            this._fipeDownloadService.GetModels(fipeTable);
+            this._downloadService.GetModels(fipeTable);
             Assert.True(fipeTable.Brands[0].Models.Count > 0, "Error downloading vehicle models!");
         }
 
         [Fact]
         public void DownloadFipeVehicleYearAndFuelTest()
         {
-            var referenceCode = this._fipeDownloadService.GetFipeTableReferenceCode();
+            var referenceCode = this._downloadService.GetFipeTableReferenceCode();
             var fipeTable = new FipeDataTable(referenceCode, FipeVehicleTypesEnum.Car);
 
             fipeTable.Brands.Add(new Brand()
@@ -78,14 +78,14 @@ namespace Vasconcellos.FipeTable.UnitTest
                 Value = "1"
             });
 
-            this._fipeDownloadService.GetYearsAndFuels(fipeTable);
+            this._downloadService.GetYearsAndFuels(fipeTable);
             Assert.True(fipeTable.Brands[0].Models[0].YearAndFuels.Count > 0, "Error downloading vehicle year and fuel!");
         }
 
         [Fact]
         public void DownloadFipeVehicleTest()
         {
-            var referenceCode = this._fipeDownloadService.GetFipeTableReferenceCode();
+            var referenceCode = this._downloadService.GetFipeTableReferenceCode();
             var fipeTable = new FipeDataTable(referenceCode, FipeVehicleTypesEnum.Car);
 
             fipeTable.Brands.Add(new Brand()
@@ -103,7 +103,7 @@ namespace Vasconcellos.FipeTable.UnitTest
                 Value = "1991-1"
             });
 
-            var vehicles = this._fipeDownloadService.GetVehicles(fipeTable);
+            var vehicles = this._downloadService.GetVehicles(fipeTable);
             Assert.True(vehicles.Count > 0, "Error downloading vehicle!");
         }
     }

@@ -10,11 +10,19 @@ using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 
 namespace Vasconcellos.FipeTable.DownloadService.Services
 {
+    /// <summary>
+    /// Fipe table download service.
+    /// </summary>
     public class FipeDownloadService : IFipeDownloadService
     {
         private readonly ILogger _logger;
         private readonly IHttpRequest _http;
 
+        /// <summary>
+        /// FipeDownloadService builder.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="httpRequest"></param>
         public FipeDownloadService(ILogger logger, IHttpRequest httpRequest)
         {
             this._logger = logger;
@@ -22,7 +30,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         }
 
         /// <summary>
-        /// Downloads the list fipe table monthly reference code
+        /// Downloads the list fipe table monthly reference code.
         /// </summary>
         /// <returns>List<Reference></returns>
         /// <returns>FipeNotFoundException</returns>
@@ -30,13 +38,14 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         {
             var referenceTable = this._http.Post<List<Reference>>("ConsultarTabelaDeReferencia", null);
             if (referenceTable == null || referenceTable.Count == 0)
-                throw new FipeNotFoundException($"The Fipe Table reference list not found.");
+                throw new FipeNotFoundException($"The FIPE table reference list not found.");
 
             return referenceTable;
         }
 
         /// <summary>
-        /// Downloads the fipe table monthly reference code
+        /// Downloads the fipe table monthly reference code.
+        /// Note: If the reference code is parameterized with the value 0, the most current reference will be used, that is, the most current data from the fipe table.
         /// </summary>
         /// <param name="requestReferenceCode"></param>
         /// <returns>int</returns>
@@ -59,7 +68,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         }
 
         /// <summary>
-        /// Downloads the vehicle brands from the fipe table, by reference code and vehicle type
+        /// Downloads the vehicle brands from the fipe table, by reference code and vehicle type.
         /// </summary>
         /// <param name="fipeTable"></param>
         /// <returns>void</returns>
@@ -70,13 +79,13 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
             List<Brand> list = this._http.Post<List<Brand>>("ConsultarMarcas", objRequest);
             if (list == null || list.Count == 0)
-                throw new FipeNotFoundException($"The Brand Table not found.");
+                throw new FipeNotFoundException($"The Brand table not found.");
 
             fipeTable.Brands = list;
         }
 
         /// <summary>
-        /// Downloads the vehicle models from the fipe table, by reference code and vehicle type
+        /// Downloads the vehicle models from the fipe table, by reference code and vehicle type.
         /// </summary>
         /// <param name="fipeTable"></param>
         /// <returns>void</returns>
@@ -90,14 +99,14 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                 //Note: The AuxModel class was used to standardize the return;
                 AuxModel auxModel = this._http.Post<AuxModel>("ConsultarModelos", objRequest);
                 if(auxModel == null || auxModel.Modelos.Count == 0)
-                    throw new FipeNotFoundException($"The Model Brand Table not found.");
+                    throw new FipeNotFoundException($"The Model Brand table not found.");
 
                 brand.Models = auxModel.Modelos;
             }
         }
 
         /// <summary>
-        /// Downloads the vehicle years and fuels from the fipe table, by reference code and vehicle type
+        /// Downloads the vehicle years and fuels from the fipe table, by reference code and vehicle type.
         /// </summary>
         /// <param name="fipeTable"></param>
         /// <returns>void</returns>
@@ -112,7 +121,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
                     List<YearAndFuel> list = this._http.Post<List<YearAndFuel>>("ConsultarAnoModelo", objRequest);
                     if (list == null || list.Count == 0)
-                        throw new FipeNotFoundException($"The Year and Fuel Table not found.");
+                        throw new FipeNotFoundException($"The Year and Fuel table not found.");
 
                     model.YearAndFuels = list;
                 }
@@ -120,7 +129,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         }
 
         /// <summary>
-        /// Downloads the vehicle information from the fipe table, by reference code and vehicle type
+        /// Downloads the vehicle information from the fipe table, by reference code and vehicle type.
         /// </summary>
         /// <param name="fipeTable"></param>
         /// <returns>List<Vehicle></returns>
@@ -139,7 +148,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
                         Vehicle vehicle = this._http.Post<Vehicle>("ConsultarValorComTodosParametros", objRequest);
                         if (vehicle == null || string.IsNullOrEmpty(vehicle.CodigoFipe))
-                            throw new FipeNotFoundException($"The Vehicle Table not found.");
+                            throw new FipeNotFoundException($"The Vehicle table not found.");
 
                         vehicle.SetAdditionalInformation(fipeTable.ReferenceCode, brand, model, yearAndFuel);
                         vehicles.Add(vehicle);

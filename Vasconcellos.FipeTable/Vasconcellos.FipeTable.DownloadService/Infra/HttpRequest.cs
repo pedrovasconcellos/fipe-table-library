@@ -17,23 +17,23 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
             this._settings = settings;
         }
 
-        public T Post<T>(string endPoint, object obj) where T : new()
+        public T Post<T>(string endPoint, object requestObject) where T : new()
         {
-            this._logger.LogInformation("Start", $"EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(obj)}");
+            this._logger.LogDebug("Starting [HttpRequest.Post(endPoint, obj)]", $"EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(requestObject)};");
             short retry = 10;
             while (retry-- > 0)
             {
                 try
                 {
-                    return this.HttpPost<T>(endPoint, obj);
+                    return this.HttpPost<T>(endPoint, requestObject);
                 }
                 catch
                 {
-                    this._logger.LogInformation("Sleep", $"ThreadSleep={this._settings.Milliseconds}; Retry={retry}; EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(obj)}");
+                    this._logger.LogInformation("Thread sleep", $"ThreadSleep={this._settings.Milliseconds} milliseconds; Retry={retry}; EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(requestObject)};");
                     Thread.Sleep(this._settings.Milliseconds);
                 }
             }
-            this._logger.LogInformation("Exhausted attempts", $"Retry={retry}; EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(obj)}");
+            this._logger.LogError("Exhausted attempts", $"Retry={retry}; EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(requestObject)};");
             return new T();
         }
 
@@ -49,7 +49,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
                 restRequest.AddHeader(requestHeader.Key, requestHeader.Value);
 
             var result = new RestClient(this._settings.ServiceUrl).Post<T>(restRequest);
-            this._logger.LogDebug("RestSharpResponse", JsonSerializer.Serialize(result.Data));
+            this._logger.LogDebug("Response [HttpRequest.HttpPost(endPoint, obj)", $"Method ={nameof(this.HttpPost)}; Response={JsonSerializer.Serialize(result.Data)}");
             if (!result.IsSuccessful)
                 return new T();
 

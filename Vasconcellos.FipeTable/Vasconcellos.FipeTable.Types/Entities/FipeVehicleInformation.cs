@@ -12,7 +12,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
         public FipeVehicleFuelTypesEnum FipeVehicleFuelTypeId { get; set; }
         public VehicleFuelTypesEnum VehicleFuelTypeId { get; set; }
         public decimal Value { get; set; }      
-        public int FipeReferenceId { get; set; }
+        public int FipeReferenceCode { get; set; }
         public string Authentication { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }

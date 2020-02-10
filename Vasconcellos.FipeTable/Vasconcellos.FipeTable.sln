@@ -9,6 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.DownloadService", "Vasconcellos.FipeTable.DownloadService\Vasconcellos.FipeTable.DownloadService.csproj", "{489001F2-B4BF-4593-B028-494DCDB12D12}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vasconcellos.FipeTable.Database", "Vasconcellos.FipeTable.Database", "{8A726033-7181-4CD8-8F67-6F05B25EDCB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tables", "Tables", "{0DBF758D-9C6E-4B72-9203-7205A4E9A48B}"
+	ProjectSection(SolutionItems) = preProject
+		Vasconcellos.FipeTable.Database\Tables\1-FipeVehicleType.sql = Vasconcellos.FipeTable.Database\Tables\1-FipeVehicleType.sql
+		Vasconcellos.FipeTable.Database\Tables\2-FipeVehicleFuelType.sql = Vasconcellos.FipeTable.Database\Tables\2-FipeVehicleFuelType.sql
+		Vasconcellos.FipeTable.Database\Tables\3-VehicleFuelType.sql = Vasconcellos.FipeTable.Database\Tables\3-VehicleFuelType.sql
+		Vasconcellos.FipeTable.Database\Tables\4-FipeVehicleBrand.sql = Vasconcellos.FipeTable.Database\Tables\4-FipeVehicleBrand.sql
+		Vasconcellos.FipeTable.Database\Tables\5-FipeVehicleModel.sql = Vasconcellos.FipeTable.Database\Tables\5-FipeVehicleModel.sql
+		Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql = Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +70,8 @@ Global
 		{489001F2-B4BF-4593-B028-494DCDB12D12}.Release|x64.Build.0 = Release|Any CPU
 		{489001F2-B4BF-4593-B028-494DCDB12D12}.Release|x86.ActiveCfg = Release|Any CPU
 		{489001F2-B4BF-4593-B028-494DCDB12D12}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0DBF758D-9C6E-4B72-9203-7205A4E9A48B} = {8A726033-7181-4CD8-8F67-6F05B25EDCB6}
 	EndGlobalSection
 EndGlobal

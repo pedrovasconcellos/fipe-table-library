@@ -1,4 +1,4 @@
-CREATE TABLE dbo.VehicleFuelTypes (
+CREATE TABLE VehicleFuelTypes (
     Id SMALLINT PRIMARY KEY NOT NULL,
     [Description] VARCHAR(20) NOT NULL,
     Active BIT NOT NULL DEFAULT(1)
