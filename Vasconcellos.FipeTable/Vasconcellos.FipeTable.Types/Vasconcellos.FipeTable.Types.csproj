@@ -16,4 +16,7 @@
     <PackageIconUrl>https://github.com/pedrovasconcellos/fipe-table-library/blob/master/vasconcellos-solutions.jpg</PackageIconUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
 </Project>

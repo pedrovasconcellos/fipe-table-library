@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Vasconcellos.FipeTable.DownloadService.Exceptions
+namespace Vasconcellos.FipeTable.Types.Exceptions
 {
-    public class FipeNotFoundException : Exception
+    public class FipeNotFoundException : FipeException
     {
         public FipeNotFoundException()
         {

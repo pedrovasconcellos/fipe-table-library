@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vasconcellos.FipeTable.DownloadService.Exceptions;
+using Vasconcellos.FipeTable.Types.Exceptions;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Models.Requests;
 using Vasconcellos.FipeTable.DownloadService.Models.Responses;
@@ -44,16 +43,16 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <returns>ArgumentException [if request return == 0]</returns>
         public int GetFipeTableReferenceCode(int requestReferenceCode = 0)
         {
-            var referenceTable = GetListReferenceCodeFipeTable();
-
+            var referenceTable = this.GetListReferenceCodeFipeTable();
             int referenceCode;
+
             if (requestReferenceCode == 0)
                 referenceCode = referenceTable.Select(x => x.Codigo).OrderByDescending(x => x).FirstOrDefault();
             else
                 referenceCode = referenceTable.Select(x => x.Codigo).FirstOrDefault(x => x == requestReferenceCode);
 
             if (referenceCode == 0)
-                throw new ArgumentException("Invalid reference ID.");
+                throw new FipeArgumentException("Invalid reference code.");
 
             return referenceCode;
         }
