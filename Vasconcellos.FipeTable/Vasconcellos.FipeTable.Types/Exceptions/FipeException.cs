@@ -13,8 +13,8 @@ namespace Vasconcellos.FipeTable.Types.Exceptions
         {
         }
 
-        public FipeException(string message, Exception inner)
-            : base(message, inner)
+        public FipeException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
     }

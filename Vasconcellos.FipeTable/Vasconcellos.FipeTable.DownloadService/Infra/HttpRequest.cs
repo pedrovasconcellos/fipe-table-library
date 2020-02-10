@@ -2,24 +2,22 @@ using RestSharp;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 
 namespace Vasconcellos.FipeTable.DownloadService.Infra
 {
-    internal class HttpRequest
+    public class HttpRequest : IHttpRequest
     {
-        private readonly ILogger _logger; 
-        private const int _milliseconds = 300000;
-        private const string _serviceUrl = "http://veiculos.fipe.org.br/api/veiculos/";
-        private const string _host = "veiculos.fipe.org.br";
-        private const string _referer = "http://veiculos.fipe.org.br";
-        private const string _contentType = "application/json";
-
-        internal HttpRequest(ILogger logger)
+        private readonly ILogger _logger;
+        private readonly IHttpRequestSettings _settings;
+                                          
+        public HttpRequest(ILogger logger, IHttpRequestSettings settings)
         {
             this._logger = logger;
+            this._settings = settings;
         }
 
-        internal T Post<T>(string endPoint, object obj) where T : new()
+        public T Post<T>(string endPoint, object obj) where T : new()
         {
             this._logger.LogInformation("Start", $"EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(obj)}");
             short retry = 10;
@@ -31,8 +29,8 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
                 }
                 catch
                 {
-                    this._logger.LogInformation("Sleep", $"ThreadSleep={_milliseconds}; Retry={retry}; EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(obj)}");
-                    Thread.Sleep(_milliseconds);
+                    this._logger.LogInformation("Sleep", $"ThreadSleep={this._settings.Milliseconds}; Retry={retry}; EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(obj)}");
+                    Thread.Sleep(this._settings.Milliseconds);
                 }
             }
             this._logger.LogInformation("Exhausted attempts", $"Retry={retry}; EndPoint={endPoint}; ObjectRequest={JsonSerializer.Serialize(obj)}");
@@ -45,12 +43,12 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
             {
                 RequestFormat = DataFormat.Json
             }
-            .AddJsonBody(obj)
-            .AddHeader("Host", _host)
-            .AddHeader("Referer", _referer)
-            .AddHeader("Content-Type", _contentType);
+            .AddJsonBody(obj);
 
-            var result = new RestClient(_serviceUrl).Post<T>(restRequest);
+            foreach (var requestHeader in this._settings.RequestHeaders)
+                restRequest.AddHeader(requestHeader.Key, requestHeader.Value);
+
+            var result = new RestClient(this._settings.ServiceUrl).Post<T>(restRequest);
             this._logger.LogDebug("RestSharpResponse", JsonSerializer.Serialize(result.Data));
             if (!result.IsSuccessful)
                 return new T();

@@ -6,18 +6,19 @@ using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Models.Requests;
 using Vasconcellos.FipeTable.DownloadService.Models.Responses;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
+using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 
 namespace Vasconcellos.FipeTable.DownloadService.Services
 {
     public class FipeDownloadService : IFipeDownloadService
     {
         private readonly ILogger _logger;
-        private readonly HttpRequest _http;
+        private readonly IHttpRequest _http;
 
-        public FipeDownloadService(ILogger logger)
+        public FipeDownloadService(ILogger logger, IHttpRequest httpRequest)
         {
             this._logger = logger;
-            this._http = new HttpRequest(this._logger);
+            this._http = httpRequest;
         }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <returns>FipeNotFoundException</returns>
         public List<Reference> GetListReferenceCodeFipeTable()
         {
-            var referenceTable = _http.Post<List<Reference>>("ConsultarTabelaDeReferencia", null);
+            var referenceTable = this._http.Post<List<Reference>>("ConsultarTabelaDeReferencia", null);
             if (referenceTable == null || referenceTable.Count == 0)
                 throw new FipeNotFoundException($"The Fipe Table reference list not found.");
 

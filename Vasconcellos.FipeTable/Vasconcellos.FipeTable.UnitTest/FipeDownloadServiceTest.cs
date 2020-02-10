@@ -4,18 +4,24 @@ using Microsoft.Extensions.Logging;
 using Vasconcellos.FipeTable.DownloadService.Services;
 using Vasconcellos.FipeTable.Types.Enums;
 using Vasconcellos.FipeTable.DownloadService.Models.Responses;
+using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
+using Vasconcellos.FipeTable.DownloadService.Infra;
 
 namespace Vasconcellos.FipeTable.UnitTest
 {
     public class FipeDownloadServiceTest
     {
         private readonly ILogger _logger;
+        private readonly IHttpRequestSettings _httpRequestSettings;
+        private readonly IHttpRequest _httpRequest;
         private readonly IFipeDownloadService _fipeDownloadService;
 
         public FipeDownloadServiceTest()
         {
             this._logger = new LoggerFactory().CreateLogger(nameof(FipeDownloadServiceTest));
-            this._fipeDownloadService = new FipeDownloadService(this._logger);
+            this._httpRequestSettings = new HttpRequestSettings();
+            this._httpRequest = new HttpRequest(this._logger, this._httpRequestSettings);
+            this._fipeDownloadService = new FipeDownloadService(this._logger, this._httpRequest);
         }
 
         [Fact]
