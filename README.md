@@ -24,12 +24,12 @@
 - Se você visualizar [Vehicle.Year = 32000], quer dizer que este veículo, é um veículo Zero KM (Novo).
 
 #### Library to download the data from the fipe table through FIPE WebAPI.
-###### Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.DownloadService
-###### Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.DownloadService
+- Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.DownloadService
+- Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.DownloadService
 
 ##### Library with the entities for the use of vehicle data from the FIPE table.
-###### Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.Types
-###### Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.Types
+- Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.Types
+- Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.Types
 
 Example of using the FIPE table library.
 ```csharp
