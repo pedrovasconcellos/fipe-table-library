@@ -5,7 +5,8 @@ namespace Vasconcellos.FipeTable.DownloadService.Services.Interfaces
 {
     public interface IFipeDownloadService
     {
-        int GetCodeTableReference(int requestReferenceCode = 0);
+        List<Reference> GetListReferenceCodeFipeTable();
+        int GetFipeTableReferenceCode(int requestReferenceCode = 0);
         void GetBrands(FipeDataTable fipeTable);
         void GetModels(FipeDataTable fipeTable);
         void GetYearsAndFuels(FipeDataTable fipeTable);

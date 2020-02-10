@@ -22,17 +22,29 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         }
 
         /// <summary>
+        /// Downloads the list fipe table monthly reference code
+        /// </summary>
+        /// <returns>List<Reference></returns>
+        /// <returns>FipeNotFoundException</returns>
+        public List<Reference> GetListReferenceCodeFipeTable()
+        {
+            var referenceTable = _http.Post<List<Reference>>("ConsultarTabelaDeReferencia", null);
+            if (referenceTable == null || referenceTable.Count == 0)
+                throw new FipeNotFoundException($"The Fipe Table reference list not found.");
+
+            return referenceTable;
+        }
+
+        /// <summary>
         /// Downloads the fipe table monthly reference code
         /// </summary>
         /// <param name="requestReferenceCode"></param>
         /// <returns>int</returns>
         /// <returns>FipeNotFoundException</returns>
         /// <returns>ArgumentException [if request return == 0]</returns>
-        public int GetCodeTableReference(int requestReferenceCode = 0)
+        public int GetFipeTableReferenceCode(int requestReferenceCode = 0)
         {
-            var referenceTable = _http.Post<List<Reference>>("ConsultarTabelaDeReferencia", null);
-            if (referenceTable == null || referenceTable.Count == 0)
-                throw new FipeNotFoundException($"The Fipe Table reference list not found.");
+            var referenceTable = GetListReferenceCodeFipeTable();
 
             int referenceCode;
             if (requestReferenceCode == 0)
@@ -129,17 +141,11 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                         if (vehicle == null || string.IsNullOrEmpty(vehicle.CodigoFipe))
                             throw new FipeNotFoundException($"The Vehicle Table not found.");
 
-                        vehicle.BrandID = brand.Value;
-                        vehicle.ModelID = model.Value;
-                        vehicle.Year = yearAndFuel.Year;
-                        vehicle.FuelID = yearAndFuel.Fuel;
-                        vehicle.ReferenceID = fipeTable.ReferenceCode;
-
+                        vehicle.SetAdditionalInformation(fipeTable.ReferenceCode, brand, model, yearAndFuel);
                         vehicles.Add(vehicle);
                     }
                 }
             }
-
             return vehicles;
         }
     }
