@@ -1,29 +1,34 @@
-# Fipe Table Library [en-us]
+# FIPE table Library [en-us]; Biblioteca da tabela FIPE [pt-br];
 
-### Biblioteca da tabela Fipe [pt-br]
-### Description: Library for using vehicles data from the Fipe Table.
+### Description: Library for using vehicles data from the FIPE table.
 
 #### License: MIT License
 #### Copyright (c) 2020 Pedro Vasconcellos
 ##### Author: Pedro Henrique Vasconcellos
 ##### Site: https://vasconcellos.solutions
 
-#### Note.
-- Use the [FipeVehicleTypesEnum] enumerator to say what type of vehicle you want to search for.
+#### Note [en-us].
+- Use the [FipeVehicleTypesEnum] enumerator to say what type of vehicle you want to download for.
 - Types of vehicles contained in the enumerator [FipeVehicleTypesEnum] (Car = 1, Motorcycle = 2, TruckAndMicroBus = 3)
-- If the (referenceCode == 0), the most current reference will be used, that is, the most current data from the fipe table.
+- If the (referenceCode == 0), the most current reference will be used, that is, the most current data from the fipe table will be downloaded.
 - Warning: Do not call more than one FIPE library download service method in parallel, as the Proxy FIPE will block your IP for a certain time (5-10 minutes maybe).
-- If you want to create the tables in the relational database [MSSQL / SqlServer], there are SQL scripts in the directory=[/Vasconcellos.FipeTable.Database/Tables/].
-- if you see [Vehicle.Year=32000] want say that the vehicle is zero KM.
+- If you want to create the tables in the relational database [MSSQL / SqlServer], there are SQL scripts in the directory=[../Vasconcellos.FipeTable.Database/Tables/].
+- If you to view [Vehicle.Year = 32000], it means that this vehicle is a Zero KM vehicle (New).
 
-#### Library to download the data from the fipe table through FIPE's WebAPI
+#### Observações [pt-br]:
+- Use o enumerador [FipeVehicleTypesEnum] para dizer qual o tipo de veículo você deseja realizar o downlad.
+- Tipos de veículos contidos no enumerador [FipeVehicleTypesEnum] (Carro = 1, Motocicleta = 2, Caminhão e Micro-Ônibus = 3)
+- Se o (referenceCode == 0), a referência mais atual será usada, ou seja, os dados mais atuais da tabela fipe serão baixados.
+- Aviso: não chame mais de um método de serviço de download da biblioteca FIPE em paralelo, pois o Proxy da FIPE bloqueará o seu IP por um determinado tempo (talvez de 5 a 10 minutos).
+- Se você deseja criar as tabelas no banco de dados relacional [MSSQL / SqlServer], existem scripts SQL no diretório = [../Vasconcellos.FipeTable.Database/Tables/].
+- Se você visualizar [Vehicle.Year = 32000], quer dizer que este veículo, é um veículo Zero KM (Novo).
+
+#### Library to download the data from the fipe table through FIPE WebAPI.
 ###### Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.DownloadService
-###### Nuget Package Manager: Install-Package Vasconcellos.FipeTable.DownloadService
 ###### Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.DownloadService
 
-##### Library with the entities for the use of vehicle data from the fipe table
+##### Library with the entities for the use of vehicle data from the FIPE table.
 ###### Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.Types
-###### Nuget Package Manager: Install-Package Vasconcellos.FipeTable.Types
 ###### Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.Types
 
 Example of using the FIPE table library.
