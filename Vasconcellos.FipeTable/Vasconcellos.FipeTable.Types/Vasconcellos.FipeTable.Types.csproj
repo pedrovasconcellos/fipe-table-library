@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Description>Library with entities for the use of vehicle data from the fipe table</Description>
+    <Description>Library with the entities for the use of vehicle data from the FIPE table.</Description>
     <ReleaseVersion>1.0</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
     <PackageVersion>1.0</PackageVersion>
@@ -10,13 +10,31 @@
     <Copyright>2020 Pedro Vasconcellos</Copyright>
     <Owners>Pedro Vasconcellos</Owners>
     <PackageProjectUrl>https://github.com/pedrovasconcellos/fipe-table-library</PackageProjectUrl>
-    <PackageTags>Tabela Fipe</PackageTags>
+    <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Fipe Table</PackageTags>
     <Title>FipeTable entity library</Title>
-    <PackageLicenseUrl>https://github.com/pedrovasconcellos/fipe-table-library/blob/master/LICENSE.txt</PackageLicenseUrl>
-    <PackageIconUrl>https://github.com/pedrovasconcellos/fipe-table-library/blob/master/vasconcellos-solutions.jpg</PackageIconUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <Version>2.0.0</Version>
+    <PackageIcon>vasconcellos-solutions.jpg</PackageIcon>
+    <RepositoryUrl>https://github.com/pedrovasconcellos/fipe-table-library</RepositoryUrl>
+    <RepositoryType>Open Source</RepositoryType>
+    <PackageReleaseNotes>Correction of the vehicle model entity and new implementations</PackageReleaseNotes>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Exceptions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\vasconcellos-solutions.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>
