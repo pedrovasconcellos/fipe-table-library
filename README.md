@@ -8,8 +8,6 @@
 ##### Author: Pedro Henrique Vasconcellos
 ##### Site: https://vasconcellos.solutions
 
-<img src="https://github.com/pedrovasconcellos/fipe-table-library/blob/master/vasconcellos-solutions.jpg">
-
 Usege tips.
 - Use the [FipeVehicleTypesEnum] enumerator to say what type of vehicle you want to search for.
 - Types of vehicles contained in the enumerator [FipeVehicleTypesEnum] (Car = 1, Motorcycle = 2, TruckAndMicroBus = 3)
