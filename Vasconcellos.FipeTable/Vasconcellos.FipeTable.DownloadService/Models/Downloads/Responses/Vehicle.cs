@@ -81,7 +81,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Responses
         {
             if (!Enum.IsDefined(typeof(FipeVehicleFuelTypesEnum), this.FipeVehicleFuelTypeId)
                 || string.IsNullOrEmpty(this.Modelo))
-                return this.VehicleFuelTypeId;
+                return 0;
 
             if (_flex.Any(x => this.Modelo == x))
                 return VehicleFuelTypesEnum.Flex;
