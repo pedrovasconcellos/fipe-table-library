@@ -3,17 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Description>Library with the entities for the use of vehicle data from the FIPE table.</Description>
-    <ReleaseVersion>1.0</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
-    <PackageVersion>1.0</PackageVersion>
-    <Authors>Pedro Vasconcellos</Authors>
-    <Copyright>2020 Pedro Vasconcellos</Copyright>
-    <Owners>Pedro Vasconcellos</Owners>
+    <PackageVersion>2.0</PackageVersion>
+    <Authors>Pedro Henrique Vasconcellos</Authors>
+    <Copyright>Copyright (c) 2020 Pedro Vasconcellos</Copyright>
+    <Owners>Pedro Henrique Vasconcellos</Owners>
     <PackageProjectUrl>https://github.com/pedrovasconcellos/fipe-table-library</PackageProjectUrl>
-    <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Fipe Table</PackageTags>
-    <Title>FipeTable entity library</Title>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageIconUrl></PackageIconUrl>
+    <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Fipe Table Model Entity Modelo Entidade</PackageTags>
+    <Title>Fipe table entities library</Title>
     <Version>2.0.0</Version>
     <PackageIcon>vasconcellos-solutions.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/pedrovasconcellos/fipe-table-library</RepositoryUrl>
@@ -24,6 +21,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
 

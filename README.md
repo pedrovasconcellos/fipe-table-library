@@ -90,3 +90,5 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads
     }
 }
 ```
+## Sponsor
+[![Vasconcellos Solutions](https://vasconcellos.solutions/assets/open-source/images/company/vasconcellos-solutions-small-icon.jpg)](https://www.vasconcellos.solutions)

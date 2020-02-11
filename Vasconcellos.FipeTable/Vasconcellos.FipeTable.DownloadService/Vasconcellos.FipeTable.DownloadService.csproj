@@ -7,13 +7,15 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageReleaseNotes>Release version</PackageReleaseNotes>
     <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Table Download</PackageTags>
+    <PackageIcon>vasconcellos-solutions.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/pedrovasconcellos/fipe-table-library</RepositoryUrl>
     <RepositoryType>Open Source</RepositoryType>
     <Copyright>Copyright (c) 2020 Pedro Vasconcellos</Copyright>
-    <PackageIcon>vasconcellos-solutions.jpg</PackageIcon>
-    <PackageIconUrl />
-    <Authors>Pedro Vasconcellos</Authors>
+    <Authors>Pedro Henrique Vasconcellos</Authors>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageVersion>2.0.1</PackageVersion>
+    <Owners>Pedro Henrique Vasconcellos</Owners>
+    <Title>FIPE table download service</Title>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,10 +36,6 @@
     <Folder Include="Infra\Interfaces\" />
     <Folder Include="Profiles\" />
     <Folder Include="Models\NormalizedDownloads\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Models\FipeVehicleInformationInnerJoinVehicleModel.cs" />
-    <Compile Remove="Models\FipeDownloadService\FipeDownloadResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE.txt">
