@@ -1,13 +1,13 @@
 # FIPE table Library [en-us]; Biblioteca da tabela FIPE [pt-br];
 
-### Description: Library for using vehicles data from the FIPE table.
-
+## Description
+### Library for using vehicles data from the FIPE table.
 #### License: MIT License
 #### Copyright (c) 2020 Pedro Vasconcellos
 ##### Author: Pedro Henrique Vasconcellos
 ##### Site: https://vasconcellos.solutions
 
-#### Note [en-us].
+## Note [en-us]:
 - Use the [FipeVehicleTypesEnum] enumerator to say what type of vehicle you want to download for.
 - Types of vehicles contained in the enumerator [FipeVehicleTypesEnum] (Car = 1, Motorcycle = 2, TruckAndMicroBus = 3)
 - If the (referenceCode == 0), the most current reference will be used, that is, the most current data from the fipe table will be downloaded.
@@ -15,7 +15,7 @@
 - If you want to create the tables in the relational database [MSSQL / SqlServer], there are SQL scripts in the directory=[../Vasconcellos.FipeTable.Database/Tables/].
 - If you to view [Vehicle.Year = 32000], it means that this vehicle is a Zero KM vehicle (New).
 
-#### Observações [pt-br]:
+## Observações [pt-br]:
 - Use o enumerador [FipeVehicleTypesEnum] para dizer qual o tipo de veículo você deseja realizar o downlad.
 - Tipos de veículos contidos no enumerador [FipeVehicleTypesEnum] (Carro = 1, Motocicleta = 2, Caminhão e Micro-Ônibus = 3)
 - Se o (referenceCode == 0), a referência mais atual será usada, ou seja, os dados mais atuais da tabela fipe serão baixados.
@@ -23,14 +23,15 @@
 - Se você deseja criar as tabelas no banco de dados relacional [MSSQL / SqlServer], existem scripts SQL no diretório = [../Vasconcellos.FipeTable.Database/Tables/].
 - Se você visualizar [Vehicle.Year = 32000], quer dizer que este veículo, é um veículo Zero KM (Novo).
 
-#### Library to download the data from the fipe table through FIPE WebAPI.
+## Library to download the data from the fipe table through FIPE WebAPI.
 - Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.DownloadService
 - Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.DownloadService
 
-##### Library with the entities for the use of vehicle data from the FIPE table.
+## Library with the entities for the use of vehicle data from the FIPE table.
 - Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.Types
 - Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.Types
 
+## Implementing the library
 Example of using the FIPE table library.
 ```csharp
 using Microsoft.Extensions.Logging;
@@ -92,3 +93,4 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads
 ```
 ## Sponsor
 [![Vasconcellos Solutions](https://vasconcellos.solutions/assets/open-source/images/company/vasconcellos-solutions-small-icon.jpg)](https://www.vasconcellos.solutions)
+### Vasconcellos IT Solutions
