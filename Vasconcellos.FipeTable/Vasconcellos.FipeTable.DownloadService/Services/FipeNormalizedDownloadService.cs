@@ -30,7 +30,12 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
         /// <summary>
         /// Get normalized Fipe table data by vehicle type and reference code.
-        /// Note: If the reference code is parameterized with the value 0, tthe most current reference will be used, that is, the most current data from the fipe table.
+        /// Notes:
+        /// - If the reference code is parameterized with the value 0, tthe most current reference will be used, that is, the most current data from the fipe table.
+        /// - The slowing in the download is caused that of the proxy of the [FIPE WebAPI], which performs momentary locks.
+        /// - To avoid making requests while the proxy is still locked, the service will pause the task for a few minutes and after will perform normal.
+        /// - The truck download is the fastest among them.
+        /// - Downloading the three types of vehicles together [Car, Motorcycle, Truck/MicroBus] takes between 2 or 4 hours.
         /// </summary>
         /// <param name="vehicleType"></param>
         /// <param name="referenceCode"></param>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Vasconcellos.FipeTable.Types.Exceptions;
-using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Models.Requests;
 using Vasconcellos.FipeTable.DownloadService.Models.Responses;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;

@@ -5,7 +5,7 @@
 #### License: MIT License
 #### Copyright (c) 2020 Pedro Vasconcellos
 ##### Author: Pedro Henrique Vasconcellos
-##### Site: https://vasconcellos.solutions
+##### Sponsor: https://vasconcellos.solutions
 
 ## Note [en-us]:
 - Use the [FipeVehicleTypesEnum] enumerator to say what type of vehicle you want to download for.
@@ -14,6 +14,10 @@
 - Warning: Do not call more than one FIPE library download service method in parallel, as the Proxy FIPE will block your IP for a certain time (5-10 minutes maybe).
 - If you want to create the tables in the relational database [MSSQL / SqlServer], there are SQL scripts in the directory=[../Vasconcellos.FipeTable.Database/Tables/].
 - If you to view [Vehicle.Year = 32000], it means that this vehicle is a Zero KM vehicle (New).
+- The slowing in the download is caused that of the proxy of the [FIPE WebAPI] that performs momentary blocks.
+- To avoid making requests while the proxy is locked, the service will pause the task for a few minutes and after will perform normal.
+- The truck download is the fastest among them.
+- Downloading the three types of vehicles together [Car, Motorcycle, Truck/MicroBus] takes between 2 or 4 hours
 
 ## Observações [pt-br]:
 - Use o enumerador [FipeVehicleTypesEnum] para dizer qual o tipo de veículo você deseja realizar o downlad.
@@ -22,6 +26,10 @@
 - Aviso: não chame mais de um método de serviço de download da biblioteca FIPE em paralelo, pois o Proxy da FIPE bloqueará o seu IP por um determinado tempo (talvez de 5 a 10 minutos).
 - Se você deseja criar as tabelas no banco de dados relacional [MSSQL / SqlServer], existem scripts SQL no diretório = [../Vasconcellos.FipeTable.Database/Tables/].
 - Se você visualizar [Vehicle.Year = 32000], quer dizer que este veículo, é um veículo Zero KM (Novo).
+- O lentidão no download é causado pelo proxy da [FIPE WebAPI], a qual executa bloqueios momentâneos.
+- Para evitar de fazer solicitações enquanto o proxy estiver bloqueado, o serviço pausará a tarefa por alguns minutos e depois será executado normalmente.
+- O download do caminhão é o mais rápido entre eles.
+- O download dos três tipos de veículos juntos [Carro, Motocicleta, Caminhão / MicroBus] leva entre 2 ou 4 horas
 
 ## Library to download the data from the fipe table through FIPE WebAPI.
 - Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.DownloadService
