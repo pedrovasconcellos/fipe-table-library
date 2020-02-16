@@ -21,7 +21,7 @@ ALTER TABLE [FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicle
 FOREIGN KEY([FipeVehicleFuelTypeId]) REFERENCES [FipeVehicleFuelType] ([Id])
 
 ALTER TABLE [FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_VehicleFuelType] 
-FOREIGN KEY([VehicleFuelTypeId]) REFERENCES [VehicleFuelType] ([Id])
+FOREIGN KEY([VehicleFuelTypeId]) REFERENCES [VehicleFuelTypes] ([Id])
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_FipeVehicleInformation] ON [FipeVehicleInformation]
 (
