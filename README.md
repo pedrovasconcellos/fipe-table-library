@@ -43,40 +43,44 @@
 Example of using the FIPE table library.
 ```csharp
 using Microsoft.Extensions.Logging;
+using System;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
+using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
 using Vasconcellos.FipeTable.DownloadService.Services;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
 using Vasconcellos.FipeTable.Types.Enums;
 
-public class Example()
+namespace ConsoleApp
 {
-    private readonly ILogger _logger;
-    private readonly IHttpRequestSettings _httpRequestSettings;
-    private readonly IHttpRequest _httpRequest;
-    private readonly IFipeDownloadService _downloadService;
-    private readonly IFipeNormalizedDownloadService _normalizedDownloadService;
-
-    /// <summary>
-    /// Builder.
-    /// </summary>
-    public Example()
+    public class Program
     {
-        this._logger = new LoggerFactory().CreateLogger("LoggerFIPE");
-        this._httpRequestSettings = new HttpRequestSettings();
-        this._httpRequest = new HttpRequest(this._logger, this._httpRequestSettings);
-        this._downloadService = new FipeDownloadService(this._logger, this._httpRequest);
-        this._normalizedDownloadService = new FipeNormalizedDownloadService(this._logger, this._downloadService);
-    }
 
-    public NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 0)
-    {
-        var result = this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
-        if(result.VehicleType == vehicleType && result.ReferenceCode == referenceCode
-            && result.Brands.Count > 0 && result.Models.Count > 0 && result.Vehicles.Count > 0)
-            return result;
-        else 
-            return null;
+        private static ILogger _logger;
+        private static IHttpRequestSettings _httpRequestSettings;
+        private static IHttpRequest _httpRequest;
+        private static IFipeDownloadService _downloadService;
+        private static IFipeNormalizedDownloadService _normalizedDownloadService;
+        static void Main(string[] args)
+        {
+            _logger = new LoggerFactory().CreateLogger("LoggerFIPE");
+            _httpRequestSettings = new HttpRequestSettings();
+            _httpRequest = new HttpRequest(_logger, _httpRequestSettings);
+            _downloadService = new FipeDownloadService(_logger, _httpRequest);
+            _normalizedDownloadService = new FipeNormalizedDownloadService(_logger, _downloadService);
+            var result = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, 245);
+            Console.WriteLine(result.Vehicles[0]?.Id);
+        }
+
+        static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 0)
+        {
+            var result = _normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
+            if (result.VehicleType == vehicleType && result.ReferenceCode == referenceCode
+                && result.Brands.Count > 0 && result.Models.Count > 0 && result.Vehicles.Count > 0)
+                return result;
+            else
+                return null;
+        }
     }
 }
 ```
