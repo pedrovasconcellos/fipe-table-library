@@ -3,6 +3,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
 {
     public class FipeVehicleModel
     {
+        public FipeVehicleModel() { }
         public FipeVehicleModel(long id, string description, long brandId)
         {
             this.Id = id;

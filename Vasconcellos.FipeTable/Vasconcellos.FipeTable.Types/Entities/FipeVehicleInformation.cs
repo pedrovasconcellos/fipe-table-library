@@ -5,6 +5,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
 {
     public class FipeVehicleInformation
     {
+        public FipeVehicleInformation() { }
         public FipeVehicleInformation(
             long brandId,
             string fipeCode,

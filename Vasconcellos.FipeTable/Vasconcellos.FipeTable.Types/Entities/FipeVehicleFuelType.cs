@@ -4,6 +4,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
 {
     public class FipeVehicleFuelType
     {
+        public FipeVehicleFuelType() { }
         public FipeVehicleFuelType(FipeVehicleFuelTypesEnum id, string description)
         {
             this.Id = id;

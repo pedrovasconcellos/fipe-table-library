@@ -17,7 +17,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads
         }
 
         public int ReferenceCode { get; private set; }
-        public FipeVehicleTypesEnum VehicleType { get; set; }
+        public FipeVehicleTypesEnum VehicleType { get; private set; }
         public IList<FipeVehicleBrand> Brands { get; private set; }
         public IList<FipeVehicleModel> Models { get; private set; }
         public IList<FipeVehicleInformation> Vehicles { get; private set; }

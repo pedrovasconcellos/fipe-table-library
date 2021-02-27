@@ -4,6 +4,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
 {
     public class FipeVehicleBrand
     {
+        public FipeVehicleBrand() { }
         public FipeVehicleBrand(long id, string description, FipeVehicleTypesEnum type) 
         {
             this.Id = id;
