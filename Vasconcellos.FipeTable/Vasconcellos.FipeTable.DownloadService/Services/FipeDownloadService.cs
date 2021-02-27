@@ -147,13 +147,25 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
                         Vehicle vehicle = this._http.Post<Vehicle>("ConsultarValorComTodosParametros", objRequest);
                         if (vehicle == null || string.IsNullOrEmpty(vehicle.CodigoFipe))
-                            throw new FipeNotFoundException($"The Vehicle table not found.");
-
-                        vehicle.SetAdditionalInformation(fipeTable.ReferenceCode, brand, model, yearAndFuel);
-                        vehicles.Add(vehicle);
+                        {
+                            _logger.LogWarning("Vehicle not found.", 
+                                fipeTable.ReferenceCode, 
+                                brand.Value, model.Value, 
+                                yearAndFuel.Year, 
+                                yearAndFuel.Fuel);
+                        }
+                        else
+                        {
+                            vehicle.SetAdditionalInformation(fipeTable.ReferenceCode, brand, model, yearAndFuel);
+                            vehicles.Add(vehicle);
+                        }
                     }
                 }
             }
+
+            if(vehicles == null || vehicles.Count == 0)
+                throw new FipeNotFoundException($"The Vehicle table not found.");
+
             return vehicles;
         }
     }

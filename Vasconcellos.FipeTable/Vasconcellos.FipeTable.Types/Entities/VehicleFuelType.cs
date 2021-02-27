@@ -4,8 +4,15 @@ namespace Vasconcellos.FipeTable.Types.Entities
 {
     public class VehicleFuelType
     {
-        public VehicleFuelTypesEnum Id { get; set; }
-        public string Description { get; set; }
-        public bool Active { get; set; }
+        public VehicleFuelType(VehicleFuelTypesEnum id, string description)
+        {
+            this.Id = id;
+            this.Description = description;
+            this.Active = true;
+        }
+
+        public VehicleFuelTypesEnum Id { get; private set; }
+        public string Description { get; private set; }
+        public bool Active { get; private set; }
     }
 }

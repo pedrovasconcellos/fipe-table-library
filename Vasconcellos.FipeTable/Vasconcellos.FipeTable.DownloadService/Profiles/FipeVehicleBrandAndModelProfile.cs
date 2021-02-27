@@ -14,22 +14,12 @@ namespace Vasconcellos.FipeTable.DownloadService.Profiles
 
             foreach (var brand in fipeTable.Brands)
             {
-                brandsEntities.Add(new FipeVehicleBrand()
-                {
-                    Id = Convert.ToInt64(brand.Value),
-                    Type = fipeTable.VehicleType,
-                    Description = brand.Label
-                });
+                brandsEntities.Add(new FipeVehicleBrand(Convert.ToInt64(brand.Value), brand.Label, fipeTable.VehicleType));
 
                 if (brand.Models != null)
                     foreach (var model in brand.Models)
                     {
-                        modelsEntities.Add(new FipeVehicleModel()
-                        {
-                            Id = Convert.ToInt64(model.Value),
-                            Description = model.Label,
-                            BrandId = Convert.ToInt32(brand.Value),
-                        });
+                        modelsEntities.Add(new FipeVehicleModel(Convert.ToInt64(model.Value), model.Label, Convert.ToInt32(brand.Value)));
                     }
             }
 

@@ -13,18 +13,17 @@ namespace Vasconcellos.FipeTable.DownloadService.Profiles
 
             foreach (var vehicle in vehicles)
             {
-                vehiclesEntity.Add(new FipeVehicleInformation()
-                {
-                    FipeCode = vehicle.CodigoFipe,
-                    FipeVehicleModelId = Convert.ToInt64(vehicle.ModelId),
-                    Value = vehicle.Value,
-                    Year = vehicle.Year,
-                    FipeVehicleFuelTypeId = vehicle.FipeVehicleFuelTypeId,
-                    VehicleFuelTypeId = vehicle.VehicleFuelTypeId,
-                    FipeReferenceCode = vehicle.ReferenceCode,
-                    Authentication = vehicle.Autenticacao,
-                    Created = vehicle.Created
-                });
+                vehiclesEntity.Add(new FipeVehicleInformation(
+                        Convert.ToInt64(vehicle.BrandId),
+                        vehicle.CodigoFipe,
+                        vehicle.ReferenceCode,
+                        Convert.ToInt64(vehicle.ModelId),
+                        vehicle.Year,
+                        vehicle.VehicleFuelTypeId,
+                        vehicle.Value,
+                        vehicle.Autenticacao,
+                        vehicle.FipeVehicleFuelTypeId
+                    ));
             }
             return vehiclesEntity;
         }

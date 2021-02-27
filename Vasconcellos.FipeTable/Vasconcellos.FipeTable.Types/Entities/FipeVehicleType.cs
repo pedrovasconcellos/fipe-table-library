@@ -4,7 +4,13 @@ namespace Vasconcellos.FipeTable.Types.Entities
 {
     public class FipeVehicleType
     {
-        public FipeVehicleTypesEnum Id { get; set; }
-        public string Description { get; set; }
+        public FipeVehicleType(FipeVehicleTypesEnum id, string description)
+        {
+            this.Id = id;
+            this.Description = description;
+        }
+
+        public FipeVehicleTypesEnum Id { get; private set; }
+        public string Description { get; private set; }
     }
 }

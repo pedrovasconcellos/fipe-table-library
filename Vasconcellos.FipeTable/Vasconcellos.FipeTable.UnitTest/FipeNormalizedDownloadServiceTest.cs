@@ -45,27 +45,31 @@ namespace Vasconcellos.FipeTable.UnitTest
         public void GetDataFromFipeTableByVehicleTypeTest(FipeVehicleTypesEnum vehicleType, int referenceCode)
         {
             var result = this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
+            var condition = false;
+            var message = "The download of normalized FIPE data was not successful. VehicleType=";
 
             switch (vehicleType)
             {
                 case FipeVehicleTypesEnum.Car:
-                    Assert.True(
-                        result.Models.Any(x => x.Description.Contains("uno", StringComparison.OrdinalIgnoreCase))
-                        && result.Vehicles.Count(x => x.VehicleFuelTypeId == VehicleFuelTypesEnum.Gas) > 2
-                        && result.Vehicles.Count(x => x.VehicleFuelTypeId == VehicleFuelTypesEnum.Flex) > 10
-                        , $"The download of normalized FIPE data was not successful. VehicleType={vehicleType};");
+                    condition = 
+                        result.Models.Any(x => x.Description.Contains("uno", StringComparison.OrdinalIgnoreCase)) &&
+                        result.Vehicles.Count(x => x.VehicleFuelTypeId == VehicleFuelTypesEnum.Ethanol) > 2 &&
+                        result.Vehicles.Count(x => x.VehicleFuelTypeId == VehicleFuelTypesEnum.Diesel) > 2 &&
+                        result.Vehicles.Count(x => x.VehicleFuelTypeId == VehicleFuelTypesEnum.Gas) > 2 &&
+                        result.Vehicles.Count(x => x.VehicleFuelTypeId == VehicleFuelTypesEnum.Flex) > 2;
+                    Assert.True(condition, $"{message}{vehicleType};");
                     goto default;
 
                 case FipeVehicleTypesEnum.Motorcycle:
-                    Assert.True(
-                        result.Models.Any(x => x.Description.Contains("ninja", StringComparison.OrdinalIgnoreCase))
-                        , $"The download of normalized FIPE data was not successful. VehicleType={vehicleType};");
+                    condition = 
+                        result.Models.Any(x => x.Description.Contains("ninja", StringComparison.OrdinalIgnoreCase));
+                    Assert.True(condition, $"{message}{vehicleType};");
                     goto default;
 
                 case FipeVehicleTypesEnum.TruckAndMicroBus:
-                    Assert.True(
-                        result.Models.Any(x => x.Description.Contains("scania", StringComparison.OrdinalIgnoreCase))
-                        , $"The download of normalized FIPE data was not successful. VehicleType={vehicleType};");
+                    condition = 
+                        result.Models.Any(x => x.Description.Contains("constellation", StringComparison.OrdinalIgnoreCase));
+                    Assert.True(condition, $"{message}{vehicleType};");
                     goto default;
 
                 default:
