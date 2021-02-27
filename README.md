@@ -51,15 +51,30 @@ using Vasconcellos.FipeTable.DownloadService.Services;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
 using Vasconcellos.FipeTable.Types.Enums;
 
-namespace ConsoleApp1TestFipe
+namespace ConsoleApp
 {
     public class Program
     {
+        private static ILogger _logger;
         private static IHttpRequestSettings _httpRequestSettings;
         private static IHttpRequest _httpRequest;
         private static IFipeDownloadService _downloadService;
         private static IFipeNormalizedDownloadService _normalizedDownloadService;
+
         static void Main(string[] args)
+        {
+            Init();
+
+            _logger.LogDebug("Starting Console FIPE TABLE.");
+
+            int lastReferenceCode = _downloadService.GetFipeTableReferenceCode();
+            var result = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
+
+            _logger.LogDebug(result.Vehicles[0]?.Id);
+            _logger.LogDebug("Finalizing Console FIPE TABLE.");
+        }
+
+        static void Init()
         {
             using var serviceProvider = new ServiceCollection()
                 .AddLogging(config =>
@@ -70,25 +85,18 @@ namespace ConsoleApp1TestFipe
                     )
                 .BuildServiceProvider();
 
-            var logger = serviceProvider
+            _logger = serviceProvider
                 .GetService<ILoggerFactory>()
                 .CreateLogger<Program>();
 
-            logger.LogDebug("Starting Console FIPE TABLE.");
-
             _httpRequestSettings = new HttpRequestSettings();
-            _httpRequest = new HttpRequest(logger, _httpRequestSettings);
-            _downloadService = new FipeDownloadService(logger, _httpRequest);
-            _normalizedDownloadService = new FipeNormalizedDownloadService(logger, _downloadService);
-            var result = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, 245);
-
-            logger.LogDebug(result.Vehicles[0]?.Id);
-
-            logger.LogDebug("Finalizing Console FIPE TABLE.");
+            _httpRequest = new HttpRequest(_logger, _httpRequestSettings);
+            _downloadService = new FipeDownloadService(_logger, _httpRequest);
+            _normalizedDownloadService = new FipeNormalizedDownloadService(_logger, _downloadService);
         }
 
 
-        static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 0)
+        static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 245)
         {
             var result = _normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
             if (result.VehicleType == vehicleType && result.ReferenceCode == referenceCode
