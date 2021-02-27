@@ -1,14 +1,14 @@
 CREATE TABLE FipeVehicleInformation
 (
-    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    Id VARCHAR(50) NOT NULL PRIMARY KEY,
     FipeCode VARCHAR(30) NOT NULL,
+    FipeReferenceCode INT NOT NULL, 
     FipeVehicleModelId BIGINT NOT NULL,
     [Year] SMALLINT NOT NULL,
-    FipeVehicleFuelTypeId SMALLINT NOT NULL,
     VehicleFuelTypeId SMALLINT NOT NULL,
     [Value] FLOAT NOT NULL,
-    FipeReferenceCode INT NOT NULL, 
     [Authentication] VARCHAR(30) NOT NULL,
+    FipeVehicleFuelTypeId SMALLINT NOT NULL,
     Created DATETIME NOT NULL,
     Updated DATETIME NULL,
     Active BIT NOT NULL DEFAULT(1)
