@@ -13,9 +13,9 @@ namespace Vasconcellos.FipeTable.Types.Entities
             this.Active = true;
         }
 
-        public long Id { get; private set; }
-        public string Description { get; private set; }
-        public FipeVehicleTypesEnum Type { get; private set; }
-        public bool Active { get; private set; }
+        public long Id { get; set; }
+        public string Description { get; set; }
+        public FipeVehicleTypesEnum Type { get; set; }
+        public bool Active { get; set; }
     }
 }

@@ -43,17 +43,17 @@ namespace Vasconcellos.FipeTable.Types.Entities
             this.Active = true;
         }
 
-        public string Id { get; private set; }
-        public string FipeCode { get; private set; }
-        public int FipeReferenceCode { get; private set; }
-        public long FipeVehicleModelId { get; private set; }
+        public string Id { get; set; }
+        public string FipeCode { get; set; }
+        public int FipeReferenceCode { get; set; }
+        public long FipeVehicleModelId { get; set; }
         public short Year { get; set; }
-        public VehicleFuelTypesEnum VehicleFuelTypeId { get; private set; }
-        public decimal Value { get; private set; }      
-        public string Authentication { get; private set; }
-        public FipeVehicleFuelTypesEnum FipeVehicleFuelTypeId { get; private set; }
-        public DateTime Created { get; private set; }
-        public DateTime? Updated { get; private set; }
-        public bool Active { get; private set; }
+        public VehicleFuelTypesEnum VehicleFuelTypeId { get; set; }
+        public decimal Value { get; set; }      
+        public string Authentication { get; set; }
+        public FipeVehicleFuelTypesEnum FipeVehicleFuelTypeId { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime? Updated { get; set; }
+        public bool Active { get; set; }
     }
 }

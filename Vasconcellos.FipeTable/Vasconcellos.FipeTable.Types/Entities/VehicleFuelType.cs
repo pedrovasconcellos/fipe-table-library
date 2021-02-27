@@ -12,8 +12,8 @@ namespace Vasconcellos.FipeTable.Types.Entities
             this.Active = true;
         }
 
-        public VehicleFuelTypesEnum Id { get; private set; }
-        public string Description { get; private set; }
-        public bool Active { get; private set; }
+        public VehicleFuelTypesEnum Id { get; set; }
+        public string Description { get; set; }
+        public bool Active { get; set; }
     }
 }
