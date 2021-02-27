@@ -97,10 +97,13 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
                 //Note: The AuxModel class was used to standardize the return;
                 AuxModel auxModel = this._http.Post<AuxModel>("ConsultarModelos", objRequest);
-                if(auxModel == null || auxModel.Modelos.Count == 0)
-                    throw new FipeNotFoundException($"The Model Brand table not found.");
-
-                brand.Models = auxModel.Modelos;
+                if (auxModel == null || auxModel.Modelos.Count == 0)
+                    _logger.LogWarning(
+                        $"The Model Brand table not found. ReferenceCode={fipeTable.ReferenceCode};BrandId={brand.Value};",
+                        fipeTable.ReferenceCode,
+                        brand.Value);
+                else
+                    brand.Models = auxModel.Modelos;
             }
         }
 
@@ -120,9 +123,13 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
                     List<YearAndFuel> list = this._http.Post<List<YearAndFuel>>("ConsultarAnoModelo", objRequest);
                     if (list == null || list.Count == 0)
-                        throw new FipeNotFoundException($"The Year and Fuel table not found.");
-
-                    model.YearAndFuels = list;
+                        _logger.LogWarning(
+                            $"The Year and Fuel table not found. ReferenceCode={fipeTable.ReferenceCode};BrandId={brand.Value};ModelId={model.Value};",
+                            fipeTable.ReferenceCode,
+                            brand.Value,
+                            model.Value);
+                    else
+                        model.YearAndFuels = list;
                 }
             }
         }
@@ -148,10 +155,12 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                         Vehicle vehicle = this._http.Post<Vehicle>("ConsultarValorComTodosParametros", objRequest);
                         if (vehicle == null || string.IsNullOrEmpty(vehicle.CodigoFipe))
                         {
-                            _logger.LogWarning("Vehicle not found.", 
-                                fipeTable.ReferenceCode, 
-                                brand.Value, model.Value, 
-                                yearAndFuel.Year, 
+                            _logger.LogWarning(
+                                $"Vehicle not found. ReferenceCode={fipeTable.ReferenceCode};BrandId={brand.Value};ModelId={model.Value};Year={yearAndFuel.Year};FuelId={(short)yearAndFuel.Fuel};",
+                                fipeTable.ReferenceCode,
+                                brand.Value,
+                                model.Value,
+                                yearAndFuel.Year,
                                 yearAndFuel.Fuel);
                         }
                         else
@@ -163,7 +172,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                 }
             }
 
-            if(vehicles == null || vehicles.Count == 0)
+            if (vehicles == null || vehicles.Count == 0)
                 throw new FipeNotFoundException($"The Vehicle table not found.");
 
             return vehicles;
