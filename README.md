@@ -42,8 +42,8 @@
 ## Implementing the library
 Example of using the FIPE table library.
 ```csharp
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
@@ -51,26 +51,42 @@ using Vasconcellos.FipeTable.DownloadService.Services;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
 using Vasconcellos.FipeTable.Types.Enums;
 
-namespace ConsoleApp
+namespace ConsoleApp1TestFipe
 {
     public class Program
     {
-
-        private static ILogger _logger;
         private static IHttpRequestSettings _httpRequestSettings;
         private static IHttpRequest _httpRequest;
         private static IFipeDownloadService _downloadService;
         private static IFipeNormalizedDownloadService _normalizedDownloadService;
         static void Main(string[] args)
         {
-            _logger = new LoggerFactory().CreateLogger("LoggerFIPE");
+            using var serviceProvider = new ServiceCollection()
+                .AddLogging(config =>
+                    config
+                        .ClearProviders()
+                        .AddConsole()
+                        .SetMinimumLevel(LogLevel.Trace)
+                    )
+                .BuildServiceProvider();
+
+            var logger = serviceProvider
+                .GetService<ILoggerFactory>()
+                .CreateLogger<Program>();
+
+            logger.LogDebug("Starting Console FIPE TABLE.");
+
             _httpRequestSettings = new HttpRequestSettings();
-            _httpRequest = new HttpRequest(_logger, _httpRequestSettings);
-            _downloadService = new FipeDownloadService(_logger, _httpRequest);
-            _normalizedDownloadService = new FipeNormalizedDownloadService(_logger, _downloadService);
+            _httpRequest = new HttpRequest(logger, _httpRequestSettings);
+            _downloadService = new FipeDownloadService(logger, _httpRequest);
+            _normalizedDownloadService = new FipeNormalizedDownloadService(logger, _downloadService);
             var result = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, 245);
-            Console.WriteLine(result.Vehicles[0]?.Id);
+
+            logger.LogDebug(result.Vehicles[0]?.Id);
+
+            logger.LogDebug("Finalizing Console FIPE TABLE.");
         }
+
 
         static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 0)
         {
