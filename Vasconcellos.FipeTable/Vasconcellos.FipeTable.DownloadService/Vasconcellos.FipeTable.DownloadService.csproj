@@ -16,6 +16,9 @@
     <PackageVersion>2.0.1</PackageVersion>
     <Owners>Pedro Henrique Vasconcellos</Owners>
     <Title>FIPE table download service</Title>
+    <Version>3.0.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
