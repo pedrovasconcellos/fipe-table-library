@@ -77,7 +77,7 @@ namespace Vasconcellos.FipeTable.UnitTest
                         result.VehicleType == vehicleType
                         && result.ReferenceCode == referenceCode
                         && result.Brands.Count > 0
-                        && result.Brands.Any(x => x.Type == vehicleType)
+                        && result.Brands.Any(x => x.FipeVehicleTypeId == vehicleType)
                         && result.Models.Count > 0
                         && result.Vehicles.Count > 0
                         , $"The download of normalized FIPE data was not successful. VehicleType={vehicleType};");

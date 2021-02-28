@@ -5,10 +5,10 @@ namespace Vasconcellos.FipeTable.Types.Entities
     public class VehicleFuelType
     {
         public VehicleFuelType() { }
-        public VehicleFuelType(VehicleFuelTypesEnum id, string description)
+        public VehicleFuelType(VehicleFuelTypesEnum vehicleFuelTypesEnum)
         {
-            this.Id = id;
-            this.Description = description;
+            this.Id = vehicleFuelTypesEnum;
+            this.Description = vehicleFuelTypesEnum.ToString();
             this.Active = true;
         }
 
