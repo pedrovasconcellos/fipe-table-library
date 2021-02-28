@@ -12,7 +12,7 @@ CREATE TABLE FipeVehicleInformation
     IsValid BIT NOT NULL DEFAULT(0),
     Created DATETIME NOT NULL,
     Updated DATETIME NULL,
-    Active BIT NOT NULL DEFAULT(0)
+    Active BIT NOT NULL DEFAULT(1)
 )
 
 ALTER TABLE [FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_FipeVehicleModel] 
