@@ -3,7 +3,7 @@
 ## Description
 ### Library for using vehicles data from the FIPE table.
 #### License: MIT License
-#### Copyright (c) 2020 Pedro Vasconcellos
+#### Copyright (c) 2021 Pedro Vasconcellos
 ##### Author: Pedro Henrique Vasconcellos
 ##### Sponsor: https://vasconcellos.solutions
 
