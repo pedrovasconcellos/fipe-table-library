@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.Types", "Vasconcellos.FipeTable.Types\Vasconcellos.FipeTable.Types.csproj", "{565A7187-5636-4EB2-8ABF-D151CA9D6BB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasconcellos.FipeTable.Types", "Vasconcellos.FipeTable.Types\Vasconcellos.FipeTable.Types.csproj", "{565A7187-5636-4EB2-8ABF-D151CA9D6BB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.UnitTest", "Vasconcellos.FipeTable.UnitTest\Vasconcellos.FipeTable.UnitTest.csproj", "{93EB2E3A-F2AE-4470-8B30-07FA7BFD4FE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasconcellos.FipeTable.UnitTest", "Vasconcellos.FipeTable.UnitTest\Vasconcellos.FipeTable.UnitTest.csproj", "{93EB2E3A-F2AE-4470-8B30-07FA7BFD4FE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.DownloadService", "Vasconcellos.FipeTable.DownloadService\Vasconcellos.FipeTable.DownloadService.csproj", "{489001F2-B4BF-4593-B028-494DCDB12D12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasconcellos.FipeTable.DownloadService", "Vasconcellos.FipeTable.DownloadService\Vasconcellos.FipeTable.DownloadService.csproj", "{489001F2-B4BF-4593-B028-494DCDB12D12}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vasconcellos.FipeTable.Database", "Vasconcellos.FipeTable.Database", "{8A726033-7181-4CD8-8F67-6F05B25EDCB6}"
 EndProject
@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tables", "Tables", "{0DBF75
 		Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql = Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.ConsoleApp", "Vasconcellos.FipeTable.ConsoleApp\Vasconcellos.FipeTable.ConsoleApp.csproj", "{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,9 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{565A7187-5636-4EB2-8ABF-D151CA9D6BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -70,8 +69,26 @@ Global
 		{489001F2-B4BF-4593-B028-494DCDB12D12}.Release|x64.Build.0 = Release|Any CPU
 		{489001F2-B4BF-4593-B028-494DCDB12D12}.Release|x86.ActiveCfg = Release|Any CPU
 		{489001F2-B4BF-4593-B028-494DCDB12D12}.Release|x86.Build.0 = Release|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Debug|x64.Build.0 = Debug|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Debug|x86.Build.0 = Debug|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Release|x64.ActiveCfg = Release|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Release|x64.Build.0 = Release|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Release|x86.ActiveCfg = Release|Any CPU
+		{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0DBF758D-9C6E-4B72-9203-7205A4E9A48B} = {8A726033-7181-4CD8-8F67-6F05B25EDCB6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A7FF369-4A8D-4708-A30C-5DEF7B803FCB}
 	EndGlobalSection
 EndGlobal
