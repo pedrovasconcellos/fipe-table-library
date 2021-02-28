@@ -9,13 +9,13 @@ namespace Vasconcellos.FipeTable.Types.Entities
         {
             this.Id = id;
             this.Description = description;
-            this.FipeVehicleTypeId = fipeVehicleTypesEnum;
+            this.VehicleTypeId = fipeVehicleTypesEnum;
             this.Active = true;
         }
 
         public long Id { get; set; }
         public string Description { get; set; }
-        public FipeVehicleTypesEnum FipeVehicleTypeId { get; set; }
+        public FipeVehicleTypesEnum VehicleTypeId { get; set; }
         public bool Active { get; set; }
     }
 }
