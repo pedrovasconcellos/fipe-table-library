@@ -23,7 +23,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
                 fipeReferenceCode < 0 || 
                 modelId < 1 || 
                 year < 1886 || 
-                (year > (DateTime.Now.Year + 1) || year == 32000) || 
+                (year > (DateTime.Now.Year + 1) && year != 32000) || 
                 !Enum.IsDefined(typeof(VehicleFuelTypesEnum), vehicleFuelTypeId) ||
                 value <= 0  ||
                 !Enum.IsDefined(typeof(FipeVehicleFuelTypesEnum), fipeVehicleFuelTypeId))
