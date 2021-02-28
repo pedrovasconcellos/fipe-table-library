@@ -42,8 +42,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <returns></returns>
         public NormalizedDownloadResult GetDataFromFipeTableByVehicleType(FipeVehicleTypesEnum vehicleType, int referenceCode = 0)
         {
-            this._logger.LogDebug($"Starting method GetDataFromFipeTableByVehicleType",
-                $"Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceCode={referenceCode};");
+            this._logger.LogDebug($"Starting method GetDataFromFipeTableByVehicleType. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceCode={referenceCode};");
 
             int selectedReferenceCode = this._downloadService.GetFipeTableReferenceCode(referenceCode);
 
@@ -54,14 +53,12 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
             this._downloadService.GetYearsAndFuels(fipeTable);
             var tupleEntities = fipeTable.ModelToEntity();
 
-            this._logger.LogDebug("Brands and models of normalized vehicles",
-                $"Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceCode={referenceCode}; FirstBrandVehicleOnTheList={JsonSerializer.Serialize(tupleEntities.Brands.FirstOrDefault())}; FirstModelVehicleOnTheList={JsonSerializer.Serialize(tupleEntities.Models.FirstOrDefault())};");
+            this._logger.LogDebug($"Brands and models of normalized vehicles. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceCode={referenceCode}; FirstBrandVehicleOnTheList={JsonSerializer.Serialize(tupleEntities.Brands.FirstOrDefault())}; FirstModelVehicleOnTheList={JsonSerializer.Serialize(tupleEntities.Models.FirstOrDefault())};");
 
             var vehicles = this._downloadService.GetVehicles(fipeTable);
             var vehicleEntitites = vehicles.ModelToEntity();
 
-            this._logger.LogDebug("Normalized vehicles",
-                $"Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceCode={referenceCode}; FirstVehicleOnTheList={JsonSerializer.Serialize(vehicleEntitites.FirstOrDefault())};");
+            this._logger.LogDebug($"Normalized vehicles. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceCode={referenceCode}; FirstVehicleOnTheList={JsonSerializer.Serialize(vehicleEntitites.FirstOrDefault())};");
 
             return new NormalizedDownloadResult(
                 selectedReferenceCode, vehicleType, tupleEntities.Brands, tupleEntities.Models, vehicleEntitites);
