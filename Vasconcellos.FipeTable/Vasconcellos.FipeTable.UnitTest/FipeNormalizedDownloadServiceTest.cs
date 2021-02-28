@@ -80,9 +80,15 @@ namespace Vasconcellos.FipeTable.UnitTest
                         && result.Brands.Any(x => x.VehicleTypeId == vehicleType)
                         && result.Models.Count > 0
                         && result.Vehicles.Count > 0
+                        && result.Vehicles.Any(x => x.IsValid)
                         , $"The download of normalized FIPE data was not successful. VehicleType={vehicleType};");
                     break;
             }
+
+            int amountValid = result.Vehicles.Count(x => x.IsValid == true);
+            int eightyPercent = Convert.ToInt32(result.Vehicles.Count * 0.80);
+            bool greaterThanEightyPercent = amountValid > eightyPercent;
+            Assert.True(greaterThanEightyPercent, "There are more than 80 percent of invalid vehicles!");
         }
     }
 }

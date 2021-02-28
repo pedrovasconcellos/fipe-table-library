@@ -6,6 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace Vasconcellos.FipeTable.ConsoleApp.Services
 {
@@ -24,7 +25,15 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
             }
         }
 
-        public async Task<bool> SaveAsync<T>(ILogger log, IList<T> entity)
+        private IMongoDatabase GetMongoDatabase()
+        {
+            var mongoUrl = MongoUrl.Create(this._connectionString);
+            var settings = MongoClientSettings.FromUrl(mongoUrl);
+            var client = new MongoClient(settings);
+            return client.GetDatabase(mongoUrl.DatabaseName);
+        }
+
+        public async Task<bool> SaveAsync<T>(ILogger log, T entity)
         {
             try
             {
@@ -33,7 +42,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
                 var collection = database
                     .GetCollection<T>(collectionName);
 
-                await collection.InsertManyAsync(entity);
+                await collection.InsertOneAsync(entity);
                 return true;
             }
             catch (Exception ex)
@@ -43,12 +52,23 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
             }
         }
 
-        private IMongoDatabase GetMongoDatabase()
+        public async Task<bool> SaveAsync<T>(ILogger log, IList<T> entities)
         {
-            var mongoUrl = MongoUrl.Create(this._connectionString);
-            var settings = MongoClientSettings.FromUrl(mongoUrl);
-            var client = new MongoClient(settings);
-            return client.GetDatabase(mongoUrl.DatabaseName);
+            try
+            {
+                var database = this.GetMongoDatabase();
+                var collectionName = typeof(T).Name;
+                var collection = database
+                    .GetCollection<T>(collectionName);
+
+                await collection.InsertManyAsync(entities);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return false;
+            }
         }
     }
 }

@@ -9,9 +9,10 @@ CREATE TABLE FipeVehicleInformation
     [Value] FLOAT NOT NULL,
     [Authentication] VARCHAR(30) NOT NULL,
     FipeVehicleFuelTypeId SMALLINT NOT NULL,
+    IsValid BIT NOT NULL DEFAULT(0),
     Created DATETIME NOT NULL,
     Updated DATETIME NULL,
-    Active BIT NOT NULL DEFAULT(1)
+    Active BIT NOT NULL DEFAULT(0)
 )
 
 ALTER TABLE [FipeVehicleInformation]  WITH CHECK ADD  CONSTRAINT [FK_FipeVehicleInformation_FipeVehicleModel] 

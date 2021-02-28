@@ -11,7 +11,7 @@ using Vasconcellos.FipeTable.DownloadService.Services;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
 using Vasconcellos.FipeTable.Types.Enums;
 
-namespace ConsoleApp
+namespace Vasconcellos.FipeTable.ConsoleApp
 {
     public class Program
     {
