@@ -31,10 +31,10 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             int lastReferenceCode = _downloadService.GetFipeTableReferenceCode();
 
             var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
-            Task.Run(() => { Save(_logger, trucks); });
+            Save(_logger, trucks);
 
             var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, lastReferenceCode);
-            Task.Run(() => { Save(_logger, motorcycles); });
+            Save(_logger, motorcycles);
 
             var cars = GetExample(FipeVehicleTypesEnum.Car, lastReferenceCode);
             Save(_logger, cars);
