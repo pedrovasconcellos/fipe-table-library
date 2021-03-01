@@ -21,6 +21,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp
         private static IFipeDownloadService _downloadService;
         private static IFipeNormalizedDownloadService _normalizedDownloadService;
         private static string _connectionString;
+        private static MongoDBService _mongo;
 
         static void Main(string[] args)
         {
@@ -29,19 +30,15 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             _logger.LogInformation("Starting Console FIPE TABLE.");
 
             int lastReferenceCode = _downloadService.GetFipeTableReferenceCode();
+            
+            var haveReferenceCodeGreaterOrEquals = _mongo
+                .HaveReferenceCodeGreaterOrEquals(_logger, lastReferenceCode);
 
-            var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
-            Save(_logger, trucks);
-
-            var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, lastReferenceCode);
-            Save(_logger, motorcycles);
-
-            var cars = GetExample(FipeVehicleTypesEnum.Car, lastReferenceCode);
-            Save(_logger, cars);
-
-            _logger.LogInformation($"{trucks?.VehicleType.GetDescription()}={trucks?.Vehicles?.Count}");
-            _logger.LogInformation($"{motorcycles?.VehicleType.GetDescription()}={motorcycles?.Vehicles?.Count}");
-            _logger.LogInformation($"{cars?.VehicleType.GetDescription()}={cars?.Vehicles?.Count}");
+            if (!haveReferenceCodeGreaterOrEquals)
+                Process(lastReferenceCode);
+            else
+                _logger.LogInformation(
+                    "There is no data to update. The database has the most recent version of the FIPE TABLE.");
 
             _logger.LogInformation("Finalizing Console FIPE TABLE.");
             Console.ReadKey();
@@ -74,8 +71,29 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             _httpRequest = new HttpRequest(_logger, _httpRequestSettings);
             _downloadService = new FipeDownloadService(_logger, _httpRequest);
             _normalizedDownloadService = new FipeNormalizedDownloadService(_logger, _downloadService);
+            _mongo = new MongoDBService(_connectionString);
         }
 
+        static void Process(int lastReferenceCode) 
+        {
+            var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
+            Save(_logger, trucks);
+
+            var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, lastReferenceCode);
+            Save(_logger, motorcycles);
+
+            var cars = GetExample(FipeVehicleTypesEnum.Car, lastReferenceCode);
+            Save(_logger, cars);
+
+            _logger.LogInformation(
+                $"{trucks?.VehicleType.GetDescription()}={trucks?.Vehicles?.Count}");
+            
+            _logger.LogInformation(
+                $"{motorcycles?.VehicleType.GetDescription()}={motorcycles?.Vehicles?.Count}");
+            
+            _logger.LogInformation(
+                $"{cars?.VehicleType.GetDescription()}={cars?.Vehicles?.Count}");
+        }
 
         static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 245)
         {
@@ -99,10 +117,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             Save(_logger, entity.Vehicles).Wait();
         }
 
-        static Task Save<T>(ILogger logger, IList<T> entity)
-        {
-            var mongo = new MongoDBService(_connectionString);
-            return mongo.SaveAsync(_logger, entity);
-        }
+        static Task<bool> Save<T>(ILogger logger, IList<T> entity) 
+            => _mongo.SaveAsync(_logger, entity);
     }
 }

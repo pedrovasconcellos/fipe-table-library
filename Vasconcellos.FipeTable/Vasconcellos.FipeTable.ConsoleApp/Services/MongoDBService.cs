@@ -7,6 +7,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using System.Linq;
+using Vasconcellos.FipeTable.Types.Entities;
 
 namespace Vasconcellos.FipeTable.ConsoleApp.Services
 {
@@ -31,6 +32,26 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
             var settings = MongoClientSettings.FromUrl(mongoUrl);
             var client = new MongoClient(settings);
             return client.GetDatabase(mongoUrl.DatabaseName);
+        }
+
+        public bool HaveReferenceCodeGreaterOrEquals(ILogger log, long referenceCode)
+        {
+            try
+            {
+                var database = this.GetMongoDatabase();
+                var collectionName = typeof(FipeVehicleInformation).Name;
+                var collection = database
+                    .GetCollection<FipeVehicleInformation>(collectionName);
+
+                return collection
+                    .AsQueryable<FipeVehicleInformation>()
+                    .Any(x => x.FipeReferenceCode >= referenceCode);
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return false;
+            }
         }
 
         public async Task<bool> SaveAsync<T>(ILogger log, T entity)
