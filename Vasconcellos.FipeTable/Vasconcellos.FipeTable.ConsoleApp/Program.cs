@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Vasconcellos.FipeTable.ConsoleApp.Services;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
@@ -44,7 +43,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             Console.ReadKey();
         }
 
-        static void Init()
+        private static void Init()
         {
             _connectionString = Environment.GetEnvironmentVariable("Vasconcellos.FipeTable.ConsoleApp.MongoDB");
             
@@ -74,28 +73,46 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             _mongo = new MongoDBService(_connectionString);
         }
 
-        static void Process(int lastReferenceCode) 
+        private static void Process(int lastReferenceCode)
         {
             var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
-            Save(_logger, trucks);
-
             var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, lastReferenceCode);
-            Save(_logger, motorcycles);
-
             var cars = GetExample(FipeVehicleTypesEnum.Car, lastReferenceCode);
-            Save(_logger, cars);
 
             _logger.LogInformation(
                 $"{trucks?.VehicleType.GetDescription()}={trucks?.Vehicles?.Count}");
-            
+
             _logger.LogInformation(
                 $"{motorcycles?.VehicleType.GetDescription()}={motorcycles?.Vehicles?.Count}");
             
             _logger.LogInformation(
                 $"{cars?.VehicleType.GetDescription()}={cars?.Vehicles?.Count}");
+
+            var brands = motorcycles.Brands
+                .Concat(trucks.Brands)
+                .Concat(cars.Brands)
+                .ToList();
+
+            var models = motorcycles.Models
+                .Concat(trucks.Models)
+                .Concat(cars.Models)
+                .ToList();
+
+            var vehicle = motorcycles.Vehicles
+                .Concat(trucks.Vehicles)
+                .Concat(cars.Vehicles)
+                .ToList();
+
+            _mongo.SaveVehicleBrands(_logger , brands).Wait();
+            _mongo.SaveVehicleModels(_logger , models).Wait();
+            _mongo.SaveVehicles(_logger , vehicle).Wait();
+
+            _logger.LogInformation($"{nameof(brands)}={brands.Count}");
+            _logger.LogInformation($"{nameof(models)}={models.Count}");
+            _logger.LogInformation($"{nameof(vehicle)}={vehicle.Count}");
         }
 
-        static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 245)
+        private static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 245)
         {
             var downloadResult = _normalizedDownloadService
                 .GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
@@ -109,15 +126,5 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             else
                 throw new ArgumentNullException(nameof(downloadResult));
         }
-
-        private static void Save(ILogger logger, NormalizedDownloadResult entity)
-        {
-            Save(_logger, entity.Brands).Wait();
-            Save(_logger, entity.Models).Wait();
-            Save(_logger, entity.Vehicles).Wait();
-        }
-
-        static Task<bool> Save<T>(ILogger logger, IList<T> entity) 
-            => _mongo.SaveAsync(_logger, entity);
     }
 }

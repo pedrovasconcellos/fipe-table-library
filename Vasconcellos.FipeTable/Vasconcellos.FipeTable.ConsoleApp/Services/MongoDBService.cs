@@ -54,7 +54,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
             }
         }
 
-        public async Task<bool> SaveAsync<T>(ILogger log, T entity)
+        public async Task<bool> InsertOneAsync<T>(ILogger log, T entity)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
             }
         }
 
-        public async Task<bool> SaveAsync<T>(ILogger log, IList<T> entities)
+        public async Task<bool> InsertManyAsync<T>(ILogger log, IList<T> entities)
         {
             try
             {
@@ -90,6 +90,58 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
                 log.LogError(ex, ex.Message);
                 return false;
             }
+        }
+
+        public async Task<IList<T>> GetAllAsync<T>(ILogger log)
+        {
+            try
+            {
+                var database = this.GetMongoDatabase();
+                var collectionName = typeof(T).Name;
+                var collection = database
+                    .GetCollection<T>(collectionName);
+
+                return await collection.AsQueryable().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, ex.Message);
+                return new List<T>();
+            }
+        }
+
+        public async Task<bool> SaveVehicleBrands(ILogger logger, IList<FipeVehicleBrand> brands)
+        {
+            var brandsSelected = this.GetAllAsync<FipeVehicleBrand>(logger).Result;
+            var brandsInserted = brands
+                .Where(x => !brandsSelected.Select(y => y.Id).Contains(x.Id))
+                .ToList();
+
+            if (brandsInserted.Count == 0)
+                return false;
+
+            return await this.InsertManyAsync(logger, brandsInserted);
+        }
+
+        public async Task<bool> SaveVehicleModels(ILogger logger, IList<FipeVehicleModel> models)
+        {
+            var modelsSelected = this.GetAllAsync<FipeVehicleModel>(logger).Result;
+            var modelsInserted = models
+                .Where(x => !modelsSelected.Select(y => y.Id).Contains(x.Id))
+                .ToList();
+
+            if (modelsInserted.Count == 0)
+                return false;
+
+            return await this.InsertManyAsync(logger, modelsInserted);
+        }
+
+        public async Task<bool> SaveVehicles(ILogger logger, IList<FipeVehicleInformation> vehicles)
+        {
+            if (vehicles.Count == 0)
+                return false;
+
+            return await this.InsertManyAsync(logger, vehicles);
         }
     }
 }
