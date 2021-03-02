@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
-using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
 using Vasconcellos.FipeTable.DownloadService.Services;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
-using Vasconcellos.FipeTable.Types.Enums;
 using Vasconcellos.FipeTable.UploadService.Domains;
 using Vasconcellos.FipeTable.UploadService.Domains.Interfaces;
 using Vasconcellos.FipeTable.UploadService.Repositories;
