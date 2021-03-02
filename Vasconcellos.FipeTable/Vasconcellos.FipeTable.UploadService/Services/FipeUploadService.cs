@@ -88,10 +88,7 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             var motorcycles = this.GetDataFipeTable(FipeVehicleTypesEnum.Motorcycle, fipeReferenceId);
             var cars = this.GetDataFipeTable(FipeVehicleTypesEnum.Car, fipeReferenceId);
 
-
-            var referenceIdValid= (trucks.FipeReference.Id == motorcycles.FipeReference.Id) 
-                && (motorcycles.FipeReference.Id == cars.FipeReference.Id);
-
+            var referenceIdValid = this.ReferenceIdValid(trucks, motorcycles, cars);
             if (!referenceIdValid)
                 throw new ArgumentException($"{nameof(referenceIdValid)}={referenceIdValid}");
 
@@ -126,6 +123,22 @@ namespace Vasconcellos.FipeTable.UploadService.Services
                 return downloadResult;
             else
                 throw new ArgumentNullException($"{nameof(downloadResult)}={downloadResult}");
+        }
+
+        private bool ReferenceIdValid(params NormalizedDownloadResult[] paramsDownloadResult)
+        {
+            int referenceId = paramsDownloadResult?.FirstOrDefault()?.FipeReference?.Id ?? 0;
+            if (referenceId == 0)
+                return false;
+
+            foreach (var downloadResult in paramsDownloadResult)
+            {
+                if (downloadResult == null
+                    || downloadResult.FipeReference == null
+                    || downloadResult.FipeReference.Id != referenceId)
+                    return false;
+            }
+            return true;
         }
 
         private void LogVehicleNumbers(NormalizedDownloadResult normalizedDownloadResult)
