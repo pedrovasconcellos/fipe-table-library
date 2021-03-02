@@ -28,13 +28,13 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             
             _logger.LogInformation("Starting Console FIPE TABLE.");
 
-            int lastReferenceCode = _downloadService.GetFipeTableReferenceCode();
+            var lastFipeReference = _downloadService.GetFipeTableReference();
             
-            var haveReferenceCodeGreaterOrEquals = _mongo
-                .HaveReferenceCodeGreaterOrEquals(_logger, lastReferenceCode);
+            var haveReferenceIdGreaterOrEquals = _mongo
+                .HaveReferenceIdGreaterOrEquals(_logger, lastFipeReference.Id);
 
-            if (!haveReferenceCodeGreaterOrEquals)
-                Process(lastReferenceCode);
+            if (!haveReferenceIdGreaterOrEquals)
+                Process(lastFipeReference.Id);
             else
                 _logger.LogInformation(
                     "There is no data to update. The database has the most recent version of the FIPE TABLE.");
@@ -73,11 +73,11 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             _mongo = new MongoDBService(_connectionString);
         }
 
-        private static void Process(int lastReferenceCode)
+        private static void Process(int lastReferenceId)
         {
-            var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, lastReferenceCode);
-            var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
-            var cars = GetExample(FipeVehicleTypesEnum.Car, lastReferenceCode);
+            var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, lastReferenceId);
+            var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceId);
+            var cars = GetExample(FipeVehicleTypesEnum.Car, lastReferenceId);
 
             _logger.LogInformation(
                 $"{motorcycles?.VehicleType.GetDescription()}={motorcycles?.Vehicles?.Count}");
@@ -103,22 +103,29 @@ namespace Vasconcellos.FipeTable.ConsoleApp
                 .Concat(cars.Vehicles)
                 .ToList();
 
+            var prices = motorcycles.Prices
+                .Concat(trucks.Prices)
+                .Concat(cars.Prices)
+                .ToList();
+
+            _mongo.SaveFipeReference(_logger, motorcycles.FipeReference).Wait();
             _mongo.SaveVehicleBrands(_logger , brands).Wait();
             _mongo.SaveVehicleModels(_logger , models).Wait();
             _mongo.SaveVehicles(_logger, vehicle).Wait();
+            _mongo.SavePrices(_logger, prices).Wait();
 
             _logger.LogInformation($"{nameof(brands)}={brands.Count}");
             _logger.LogInformation($"{nameof(models)}={models.Count}");
             _logger.LogInformation($"{nameof(vehicle)}={vehicle.Count}");
         }
 
-        private static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceCode = 245)
+        private static NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceId = 245)
         {
             var downloadResult = _normalizedDownloadService
-                .GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
+                .GetDataFromFipeTableByVehicleType(vehicleType, referenceId);
             
             if (downloadResult.VehicleType == vehicleType 
-                && downloadResult.ReferenceCode == referenceCode 
+                && downloadResult.FipeReference.Id == referenceId 
                 && downloadResult.Brands.Count > 0 
                 && downloadResult.Models.Count > 0 
                 && downloadResult.Vehicles.Count > 0)

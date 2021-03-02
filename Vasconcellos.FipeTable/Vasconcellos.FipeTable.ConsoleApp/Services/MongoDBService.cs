@@ -34,18 +34,18 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
             return client.GetDatabase(mongoUrl.DatabaseName);
         }
 
-        public bool HaveReferenceCodeGreaterOrEquals(ILogger log, long referenceCode)
+        public bool HaveReferenceIdGreaterOrEquals(ILogger log, long referenceId)
         {
             try
             {
                 var database = this.GetMongoDatabase();
-                var collectionName = typeof(FipeVehicleInformation).Name;
+                var collectionName = typeof(FipeReference).Name;
                 var collection = database
-                    .GetCollection<FipeVehicleInformation>(collectionName);
+                    .GetCollection<FipeReference>(collectionName);
 
                 return collection
-                    .AsQueryable<FipeVehicleInformation>()
-                    .Any(x => x.FipeReferenceCode >= referenceCode);
+                    .AsQueryable<FipeReference>()
+                    .Any(x => x.Id >= referenceId);
             }
             catch (Exception ex)
             {
@@ -110,6 +110,19 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
             }
         }
 
+        public async Task<bool> SaveFipeReference(ILogger logger, FipeReference fipeReference)
+        {
+            var fipeReferencesSelected = await this.GetAllAsync<FipeReference>(logger);
+            var fipeReferencesInserted = new List<FipeReference> { fipeReference }
+                .Where(x => !fipeReferencesSelected.Any(y => x.Id == y.Id))
+                .ToList();
+
+            if (fipeReferencesInserted.Count == 0)
+                return false;
+
+            return await this.InsertOneAsync(logger, fipeReferencesInserted.SingleOrDefault());
+        }
+
         public async Task<bool> SaveVehicleBrands(ILogger logger, IList<FipeVehicleBrand> brands)
         {
             var brandsSelected = await this.GetAllAsync<FipeVehicleBrand>(logger);
@@ -138,7 +151,28 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
 
         public async Task<bool> SaveVehicles(ILogger logger, IList<FipeVehicleInformation> vehicles)
         {
+            var vehiclesSelected = await this.GetAllAsync<FipeVehicleInformation>(logger);
+            var vehiclesInserted = vehicles
+                .Where(x => !vehiclesSelected.Any(y => x.Id == y.Id))
+                .ToList();
+
+            if (vehiclesInserted.Count == 0)
+                return false;
+
             return await this.InsertManyAsync(logger, vehicles);
+        }
+
+        public async Task<bool> SavePrices(ILogger logger, IList<FipeVehiclePrice> prices)
+        {
+            var pricesSelected = await this.GetAllAsync<FipeVehiclePrice>(logger);
+            var pricesInserted = prices
+                .Where(x => !pricesSelected.Any(y => x.Id == y.Id))
+                .ToList();
+
+            if (pricesInserted.Count == 0)
+                return false;
+
+            return await this.InsertManyAsync(logger, prices);
         }
     }
 }

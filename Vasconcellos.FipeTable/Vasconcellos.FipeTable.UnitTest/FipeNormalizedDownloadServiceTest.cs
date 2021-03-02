@@ -30,21 +30,21 @@ namespace Vasconcellos.FipeTable.UnitTest
         /// <summary>
         /// Get data from FIPE table by vehicle type test
         /// Notes:
-        /// - If the reference code is parameterized with the value 0, tthe most current reference will be used, that is, the most current data from the fipe table.
+        /// - If the reference id is parameterized with the value 0, tthe most current reference will be used, that is, the most current data from the fipe table.
         /// - The slowing in the download is caused that of the proxy of the [FIPE WebAPI], which performs momentary locks.
         /// - To avoid making requests while the proxy is still locked, the service will pause the task for a few minutes and after will perform normal.
         /// - The truck download is the fastest among them.
         /// - Downloading the three types of vehicles together [Car, Motorcycle, Truck/MicroBus] takes between 2 or 4 hours.
         /// </summary>
         /// <param name="vehicleType"></param>
-        /// <param name="referenceCode"></param>
+        /// <param name="referenceId"></param>
         [Theory]
         //[InlineData(FipeVehicleTypesEnum.Car, 266)]
         [InlineData(FipeVehicleTypesEnum.Motorcycle, 266)]
         //[InlineData(FipeVehicleTypesEnum.TruckAndMicroBus, 266)]
-        public void GetDataFromFipeTableByVehicleTypeTest(FipeVehicleTypesEnum vehicleType, int referenceCode)
+        public void GetDataFromFipeTableByVehicleTypeTest(FipeVehicleTypesEnum vehicleType, int referenceId)
         {
-            var result = this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);
+            var result = this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceId);
             var condition = false;
             var message = "The download of normalized FIPE data was not successful. VehicleType=";
 
@@ -75,12 +75,13 @@ namespace Vasconcellos.FipeTable.UnitTest
                 default:
                     Assert.True(
                         result.VehicleType == vehicleType
-                        && result.ReferenceCode == referenceCode
+                        && result.FipeReference.Id == referenceId
                         && result.Brands.Count > 0
                         && result.Brands.Any(x => x.VehicleTypeId == vehicleType)
                         && result.Models.Count > 0
                         && result.Vehicles.Count > 0
                         && result.Vehicles.Any(x => x.IsValid)
+                        && result.Prices.Any(x => x.Value > 0)
                         , $"The download of normalized FIPE data was not successful. VehicleType={vehicleType};");
                     break;
             }

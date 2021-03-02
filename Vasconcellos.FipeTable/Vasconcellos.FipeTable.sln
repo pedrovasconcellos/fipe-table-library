@@ -13,15 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vasconcellos.FipeTable.Data
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tables", "Tables", "{0DBF758D-9C6E-4B72-9203-7205A4E9A48B}"
 	ProjectSection(SolutionItems) = preProject
+		Vasconcellos.FipeTable.Database\Tables\0-FipeReference.sql = Vasconcellos.FipeTable.Database\Tables\0-FipeReference.sql
 		Vasconcellos.FipeTable.Database\Tables\1-FipeVehicleType.sql = Vasconcellos.FipeTable.Database\Tables\1-FipeVehicleType.sql
 		Vasconcellos.FipeTable.Database\Tables\2-FipeVehicleFuelType.sql = Vasconcellos.FipeTable.Database\Tables\2-FipeVehicleFuelType.sql
 		Vasconcellos.FipeTable.Database\Tables\3-VehicleFuelType.sql = Vasconcellos.FipeTable.Database\Tables\3-VehicleFuelType.sql
 		Vasconcellos.FipeTable.Database\Tables\4-FipeVehicleBrand.sql = Vasconcellos.FipeTable.Database\Tables\4-FipeVehicleBrand.sql
 		Vasconcellos.FipeTable.Database\Tables\5-FipeVehicleModel.sql = Vasconcellos.FipeTable.Database\Tables\5-FipeVehicleModel.sql
 		Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql = Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql
+		Vasconcellos.FipeTable.Database\Tables\7-FipeVehiclePrice.sql = Vasconcellos.FipeTable.Database\Tables\7-FipeVehiclePrice.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.ConsoleApp", "Vasconcellos.FipeTable.ConsoleApp\Vasconcellos.FipeTable.ConsoleApp.csproj", "{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasconcellos.FipeTable.ConsoleApp", "Vasconcellos.FipeTable.ConsoleApp\Vasconcellos.FipeTable.ConsoleApp.csproj", "{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

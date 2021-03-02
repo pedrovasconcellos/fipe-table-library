@@ -54,7 +54,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Responses
         public string DataConsulta { get; set; }
 
         #region NotUsedInDeserialization
-        public int ReferenceCode { get; set; }
+        public int ReferenceId { get; set; }
         public string BrandId { get; set; }
         public string ModelId { get; set; }
         public FipeVehicleFuelTypesEnum FipeVehicleFuelTypeId { get; set; }
@@ -64,9 +64,9 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Responses
         public decimal Value { get => Convert.ToDecimal(this.Valor?.Substring(2)?.Replace(".", "").Replace(",", ".")); }
         #endregion NotUsedInDeserialization
 
-        internal void SetAdditionalInformation(int referenceCode, Brand brand, Model model, YearAndFuel yearAndFuel)
+        internal void SetAdditionalInformation(int referenceId, Brand brand, Model model, YearAndFuel yearAndFuel)
         {
-            this.ReferenceCode = referenceCode;
+            this.ReferenceId = referenceId;
             this.BrandId = brand.Value;
             this.ModelId = model.Value;
             this.Year = yearAndFuel.Year;
