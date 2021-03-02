@@ -39,9 +39,9 @@ namespace Vasconcellos.FipeTable.UnitTest
         /// <param name="vehicleType"></param>
         /// <param name="referenceCode"></param>
         [Theory]
-        //[InlineData(FipeVehicleTypesEnum.Car, 245)]
-        //[InlineData(FipeVehicleTypesEnum.Motorcycle, 245)]
-        [InlineData(FipeVehicleTypesEnum.TruckAndMicroBus, 245)]
+        //[InlineData(FipeVehicleTypesEnum.Car, 266)]
+        [InlineData(FipeVehicleTypesEnum.Motorcycle, 266)]
+        //[InlineData(FipeVehicleTypesEnum.TruckAndMicroBus, 266)]
         public void GetDataFromFipeTableByVehicleTypeTest(FipeVehicleTypesEnum vehicleType, int referenceCode)
         {
             var result = this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceCode);

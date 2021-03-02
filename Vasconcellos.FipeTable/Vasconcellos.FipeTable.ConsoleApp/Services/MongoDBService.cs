@@ -112,9 +112,9 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
 
         public async Task<bool> SaveVehicleBrands(ILogger logger, IList<FipeVehicleBrand> brands)
         {
-            var brandsSelected = this.GetAllAsync<FipeVehicleBrand>(logger).Result;
+            var brandsSelected = await this.GetAllAsync<FipeVehicleBrand>(logger);
             var brandsInserted = brands
-                .Where(x => !brandsSelected.Select(y => y.Id).Contains(x.Id))
+                .Where(x => !brandsSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
             if (brandsInserted.Count == 0)
@@ -125,9 +125,9 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
 
         public async Task<bool> SaveVehicleModels(ILogger logger, IList<FipeVehicleModel> models)
         {
-            var modelsSelected = this.GetAllAsync<FipeVehicleModel>(logger).Result;
+            var modelsSelected = await this.GetAllAsync<FipeVehicleModel>(logger);
             var modelsInserted = models
-                .Where(x => !modelsSelected.Select(y => y.Id).Contains(x.Id))
+                .Where(x => !modelsSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
             if (modelsInserted.Count == 0)
@@ -138,9 +138,6 @@ namespace Vasconcellos.FipeTable.ConsoleApp.Services
 
         public async Task<bool> SaveVehicles(ILogger logger, IList<FipeVehicleInformation> vehicles)
         {
-            if (vehicles.Count == 0)
-                return false;
-
             return await this.InsertManyAsync(logger, vehicles);
         }
     }

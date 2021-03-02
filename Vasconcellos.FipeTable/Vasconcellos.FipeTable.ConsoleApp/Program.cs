@@ -75,16 +75,16 @@ namespace Vasconcellos.FipeTable.ConsoleApp
 
         private static void Process(int lastReferenceCode)
         {
-            var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
             var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, lastReferenceCode);
+            var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, lastReferenceCode);
             var cars = GetExample(FipeVehicleTypesEnum.Car, lastReferenceCode);
+
+            _logger.LogInformation(
+                $"{motorcycles?.VehicleType.GetDescription()}={motorcycles?.Vehicles?.Count}");
 
             _logger.LogInformation(
                 $"{trucks?.VehicleType.GetDescription()}={trucks?.Vehicles?.Count}");
 
-            _logger.LogInformation(
-                $"{motorcycles?.VehicleType.GetDescription()}={motorcycles?.Vehicles?.Count}");
-            
             _logger.LogInformation(
                 $"{cars?.VehicleType.GetDescription()}={cars?.Vehicles?.Count}");
 
@@ -105,7 +105,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp
 
             _mongo.SaveVehicleBrands(_logger , brands).Wait();
             _mongo.SaveVehicleModels(_logger , models).Wait();
-            _mongo.SaveVehicles(_logger , vehicle).Wait();
+            _mongo.SaveVehicles(_logger, vehicle).Wait();
 
             _logger.LogInformation($"{nameof(brands)}={brands.Count}");
             _logger.LogInformation($"{nameof(models)}={models.Count}");
