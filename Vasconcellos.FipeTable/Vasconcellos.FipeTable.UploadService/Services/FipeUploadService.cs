@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
+using Vasconcellos.FipeTable.Types.Entities;
 using Vasconcellos.FipeTable.Types.Enums;
 using Vasconcellos.FipeTable.UploadService.Domains.Interfaces;
 using Vasconcellos.FipeTable.UploadService.Services.Interfaces;
@@ -51,46 +53,14 @@ namespace Vasconcellos.FipeTable.UploadService.Services
                 return false;
             }
 
-            var motorcycles = GetExample(FipeVehicleTypesEnum.Motorcycle, fipeReferenceId);
-            var trucks = GetExample(FipeVehicleTypesEnum.TruckAndMicroBus, fipeReferenceId);
-            var cars = GetExample(FipeVehicleTypesEnum.Car, fipeReferenceId);
+            var fipeTable = this.GetDataFipeTable(fipeReferenceId);
+            var fipeReference = fipeTable.FipeReference;
+            var brands = fipeTable.Brands;
+            var models = fipeTable.Models;
+            var vehicle = fipeTable.Vehicles;
+            var prices = fipeTable.Prices;
 
-            _logger.LogInformation(
-                $"{motorcycles?.VehicleType.GetDescription()}={motorcycles?.Vehicles?.Count}");
-
-            _logger.LogInformation(
-                $"{trucks?.VehicleType.GetDescription()}={trucks?.Vehicles?.Count}");
-
-            _logger.LogInformation(
-                $"{cars?.VehicleType.GetDescription()}={cars?.Vehicles?.Count}");
-
-            var brands = motorcycles.Brands
-                .Concat(trucks.Brands)
-                .Concat(cars.Brands)
-                .ToList();
-
-            var models = motorcycles.Models
-                .Concat(trucks.Models)
-                .Concat(cars.Models)
-                .ToList();
-
-            var vehicle = motorcycles.Vehicles
-                .Concat(trucks.Vehicles)
-                .Concat(cars.Vehicles)
-                .ToList();
-
-            var prices = motorcycles.Prices
-                .Concat(trucks.Prices)
-                .Concat(cars.Prices)
-                .ToList();
-
-            _logger.LogInformation($"fipeReference={fipeReferenceId}");
-            _logger.LogInformation($"{nameof(brands)}={brands.Count}");
-            _logger.LogInformation($"{nameof(models)}={models.Count}");
-            _logger.LogInformation($"{nameof(vehicle)}={vehicle.Count}");
-            _logger.LogInformation($"{nameof(prices)}={prices.Count}");
-
-            await this._uploadDomain.SaveFipeReference(motorcycles.FipeReference);
+            await this._uploadDomain.SaveFipeReference(fipeReference);
 
             if (brands != null && brands.Count > 0)
                 await this._uploadDomain.SaveVehicleBrands(brands);
@@ -107,9 +77,45 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             return true;
         }
 
-        private NormalizedDownloadResult GetExample(FipeVehicleTypesEnum vehicleType, int referenceId = 245)
+        private (FipeReference FipeReference,
+            IList<FipeVehicleBrand> Brands, 
+            IList<FipeVehicleModel> Models, 
+            IList<FipeVehicleInformation> Vehicles, 
+            IList<FipeVehiclePrice> Prices)
+            GetDataFipeTable(int fipeReferenceId)
         {
-            var downloadResult = _normalizedDownloadService
+            var trucks = this.GetDataFipeTable(FipeVehicleTypesEnum.TruckAndMicroBus, fipeReferenceId);
+            var motorcycles = this.GetDataFipeTable(FipeVehicleTypesEnum.Motorcycle, fipeReferenceId);
+            var cars = this.GetDataFipeTable(FipeVehicleTypesEnum.Car, fipeReferenceId);
+
+
+            var referenceIdValid= (trucks.FipeReference.Id == motorcycles.FipeReference.Id) 
+                && (motorcycles.FipeReference.Id == cars.FipeReference.Id);
+
+            if (!referenceIdValid)
+                throw new ArgumentException($"{nameof(referenceIdValid)}={referenceIdValid}");
+
+            this.LogVehicleNumbers(trucks);
+            this.LogVehicleNumbers(motorcycles);
+            this.LogVehicleNumbers(cars);
+
+            var brands = this.Join(trucks.Brands, motorcycles.Brands, cars.Brands);
+            var models = this.Join(trucks.Models, motorcycles.Models, cars.Models);
+            var vehicle = this.Join(trucks.Vehicles, motorcycles.Vehicles, cars.Vehicles);
+            var prices = this.Join(trucks.Prices, motorcycles.Prices, cars.Prices);
+
+            this.LogQuantity(nameof(fipeReferenceId), fipeReferenceId);
+            this.LogQuantity(nameof(brands), brands.Count);
+            this.LogQuantity(nameof(models), models.Count);
+            this.LogQuantity(nameof(vehicle), vehicle.Count);
+            this.LogQuantity(nameof(prices), prices.Count);
+
+            return (trucks.FipeReference, brands, models, vehicle, prices);
+        }
+
+        private NormalizedDownloadResult GetDataFipeTable(FipeVehicleTypesEnum vehicleType, int referenceId)
+        {
+            var downloadResult = this._normalizedDownloadService
                 .GetDataFromFipeTableByVehicleType(vehicleType, referenceId);
 
             if (downloadResult.VehicleType == vehicleType
@@ -119,7 +125,28 @@ namespace Vasconcellos.FipeTable.UploadService.Services
                 && downloadResult.Vehicles.Count > 0)
                 return downloadResult;
             else
-                throw new ArgumentNullException(nameof(downloadResult));
+                throw new ArgumentNullException($"{nameof(downloadResult)}={downloadResult}");
+        }
+
+        private void LogVehicleNumbers(NormalizedDownloadResult normalizedDownloadResult)
+        {
+            _logger.LogInformation(
+                $"{normalizedDownloadResult?.VehicleType.GetDescription()}={normalizedDownloadResult?.Vehicles?.Count}");
+        }
+
+        private IList<T> Join<T>(params IList<T>[] paramsList)
+        {
+            IList<T> resultList = new List<T>();
+            foreach (var list in paramsList)
+            {
+                resultList.Concat(list);
+            }
+            return resultList;
+        }
+
+        private void LogQuantity(string description, int count)
+        {
+            _logger.LogInformation($"{description}={count}");
         }
     }
 }
