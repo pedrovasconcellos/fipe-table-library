@@ -106,7 +106,8 @@ namespace ConsoleApp
                 && downloadResult.FipeReference.Id == referenceId 
                 && downloadResult.Brands.Count > 0 
                 && downloadResult.Models.Count > 0 
-                && downloadResult.Vehicles.Count > 0)
+                && downloadResult.Vehicles.Count > 0 
+                && downloadResult.Prices.Count > 0)
                 return downloadResult;
             else
                 throw new ArgumentNullException(nameof(downloadResult));
