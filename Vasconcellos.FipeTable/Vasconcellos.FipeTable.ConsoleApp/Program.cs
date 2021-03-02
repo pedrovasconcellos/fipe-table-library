@@ -32,7 +32,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp
             
             _logger.LogInformation("Starting Console FIPE TABLE.");
 
-            _uploadService.Process(false);
+            _uploadService.Process(false).Wait();
 
             _logger.LogInformation("Finalizing Console FIPE TABLE.");
             Console.ReadKey();
