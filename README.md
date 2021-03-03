@@ -40,6 +40,10 @@
 - Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.Types
 - Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.Types
 
+## Library to upload the data from the fipe table in the database through FIPE Web API. Save the data from the fipe table on Mongodb
+- Nuget: https://www.nuget.org/packages/Vasconcellos.FipeTable.UploadService
+- Nuget .NET CLI: dotnet add package Vasconcellos.FipeTable.UploadService
+
 ## Implementing the library
 Example of using the FIPE table library.
 ```csharp
