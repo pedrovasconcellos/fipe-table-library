@@ -71,7 +71,7 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
             if (vehiclesInserted.Count == 0)
                 return false;
 
-            return await this._repository.InsertManyAsync(vehicles);
+            return await this._repository.InsertManyAsync(vehiclesInserted);
         }
 
         public async Task<bool> SavePrices(IList<FipeVehiclePrice> prices)
@@ -84,7 +84,7 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
             if (pricesInserted.Count == 0)
                 return false;
 
-            return await this._repository.InsertManyAsync(prices);
+            return await this._repository.InsertManyAsync(pricesInserted);
         }
     }
 }

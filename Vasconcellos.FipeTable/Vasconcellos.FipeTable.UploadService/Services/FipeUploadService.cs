@@ -31,19 +31,26 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             this._uploadDomain = uploadDomain;
         }
 
-        public async Task<bool> Process(bool processingForce)
+        /// <summary>
+        /// Process the fipe table upload.
+        /// Note: If the reference id is parameterized with the value 0, the most current reference will be used, that is, the most current data from the fipe table.
+        /// </summary>
+        /// <param name="fipeReferenceId"></param>
+        /// <param name="processingForce"></param>
+        /// <returns>Task<bool></returns>
+        public async Task<bool> ProcessUpload(int fipeReferenceId = 0, bool processingForce = false)
         {
-            var lastFipeReference = _downloadService.GetFipeTableReference();
+            var lastFipeReference = _downloadService.GetFipeTableReference(fipeReferenceId);
             if (lastFipeReference == null || lastFipeReference.Id < 1)
             {
                 _logger.LogInformation(
                     $"{nameof(lastFipeReference)} invalid.");
                 return false;
             }
-            int fipeReferenceId = lastFipeReference.Id;
+            int fipeReferenceIdSelected = lastFipeReference.Id;
 
             bool haveReferenceIdGreaterOrEquals = this._uploadDomain
-                    .HaveReferenceIdGreaterOrEquals(fipeReferenceId);
+                    .HaveReferenceIdGreaterOrEquals(fipeReferenceIdSelected);
 
             var stopProcessing = !(processingForce || !haveReferenceIdGreaterOrEquals);
             if (stopProcessing)
@@ -53,7 +60,7 @@ namespace Vasconcellos.FipeTable.UploadService.Services
                 return false;
             }
 
-            var fipeTable = this.GetDataFipeTable(fipeReferenceId);
+            var fipeTable = this.GetDataFipeTable(fipeReferenceIdSelected);
             var fipeReference = fipeTable.FipeReference;
             var brands = fipeTable.Brands;
             var models = fipeTable.Models;
@@ -152,7 +159,10 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             IList<T> resultList = new List<T>();
             foreach (var list in paramsList)
             {
-                resultList.Concat(list);
+                foreach (var obj in list)
+                {
+                    resultList.Add(obj);
+                }
             }
             return resultList;
         }

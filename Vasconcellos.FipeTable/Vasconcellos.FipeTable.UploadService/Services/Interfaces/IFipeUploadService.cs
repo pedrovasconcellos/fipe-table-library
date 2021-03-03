@@ -4,6 +4,6 @@ namespace Vasconcellos.FipeTable.UploadService.Services.Interfaces
 {
     public interface IFipeUploadService
     {
-        Task<bool> Process(bool processingForce);
+        Task<bool> ProcessUpload(int fipeReferenceId = 0, bool processingForce = false);
     }
 }
