@@ -5,6 +5,6 @@ namespace Vasconcellos.FipeTable.DownloadService.Services.Interfaces
 {
     public interface IFipeNormalizedDownloadService
     {
-        NormalizedDownloadResult GetDataFromFipeTableByVehicleType(FipeVehicleTypesEnum vehicleType, int referenceCode = 0);
+        NormalizedDownloadResult GetDataFromFipeTableByVehicleType(FipeVehicleTypesEnum vehicleType, int referenceId = 0);
     }
 }

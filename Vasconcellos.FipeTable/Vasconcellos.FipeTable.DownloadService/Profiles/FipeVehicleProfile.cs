@@ -7,25 +7,31 @@ namespace Vasconcellos.FipeTable.DownloadService.Profiles
 {
     public static class FipeVehicleProfile
     {
-        public static List<FipeVehicleInformation> ModelToEntity(this IEnumerable<Vehicle> vehicles)
+        public static (List<FipeVehicleInformation> Vehicles, List<FipeVehiclePrice> Prices) 
+            ModelToEntity(this IEnumerable<Vehicle> vehicles)
         {
             var vehiclesEntity = new List<FipeVehicleInformation>();
+            var pricesEntity = new List<FipeVehiclePrice>();
 
             foreach (var vehicle in vehicles)
             {
-                vehiclesEntity.Add(new FipeVehicleInformation(
-                        Convert.ToInt64(vehicle.BrandId),
+                var vehicleEntity = new FipeVehicleInformation(
                         vehicle.CodigoFipe,
-                        vehicle.ReferenceCode,
                         Convert.ToInt64(vehicle.ModelId),
                         vehicle.Year,
                         vehicle.VehicleFuelTypeId,
-                        vehicle.Value,
                         vehicle.Autenticacao,
                         vehicle.FipeVehicleFuelTypeId
-                    ));
+                    );
+
+                vehiclesEntity.Add(vehicleEntity);
+
+                pricesEntity.Add(new FipeVehiclePrice(
+                    vehicle.ReferenceId, 
+                    vehicleEntity.Id, 
+                    vehicle.Value));
             }
-            return vehiclesEntity;
+            return (vehiclesEntity , pricesEntity);
         }
     }
 }
