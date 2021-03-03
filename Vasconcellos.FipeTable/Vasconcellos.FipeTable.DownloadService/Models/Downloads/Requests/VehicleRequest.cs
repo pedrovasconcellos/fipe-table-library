@@ -9,7 +9,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Requests
         {
             return new
             {
-                CodigoTabelaReferencia = fipeTable.ReferenceCode,
+                CodigoTabelaReferencia = fipeTable.ReferenceId,
                 CodigoTipoVeiculo = fipeTable.VehicleType
             };
         }
@@ -18,7 +18,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Requests
         {
             return new
             {
-                CodigoTabelaReferencia = fipeTable.ReferenceCode,
+                CodigoTabelaReferencia = fipeTable.ReferenceId,
                 CodigoTipoVeiculo = fipeTable.VehicleType,
                 CodigoMarca = brandCode,
             };
@@ -28,7 +28,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Requests
         {
             return new
             {
-                CodigoTabelaReferencia = fipeTable.ReferenceCode,
+                CodigoTabelaReferencia = fipeTable.ReferenceId,
                 CodigoTipoVeiculo = fipeTable.VehicleType,
                 codigoMarca = brandCode,
                 codigoModelo = modelCode,
@@ -39,7 +39,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Requests
         {
             return new
             {
-                CodigoTabelaReferencia = fipeTable.ReferenceCode,
+                CodigoTabelaReferencia = fipeTable.ReferenceId,
                 CodigoTipoVeiculo = fipeTable.VehicleType,
                 codigoMarca = brandCode,
                 codigoModelo = modelCode,

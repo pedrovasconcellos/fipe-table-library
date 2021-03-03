@@ -5,14 +5,14 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.Responses
 {
     public class FipeDataTable
     {
-        public FipeDataTable(int referenceCode, FipeVehicleTypesEnum vehicleType)
+        public FipeDataTable(int referenceId, FipeVehicleTypesEnum vehicleType)
         {
-            this.ReferenceCode = referenceCode;
+            this.ReferenceId = referenceId;
             this.VehicleType = vehicleType;
             this.Brands = new List<Brand>();
         }
 
-        public int ReferenceCode { get; private set; }
+        public int ReferenceId { get; private set; }
         public FipeVehicleTypesEnum VehicleType { get; private set; }
         public List<Brand> Brands { get; set; }
     }
