@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tables", "Tables", "{0DBF75
 		Vasconcellos.FipeTable.Database\Tables\5-FipeVehicleModel.sql = Vasconcellos.FipeTable.Database\Tables\5-FipeVehicleModel.sql
 		Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql = Vasconcellos.FipeTable.Database\Tables\6-FipeVehicleInformation.sql
 		Vasconcellos.FipeTable.Database\Tables\7-FipeVehiclePrice.sql = Vasconcellos.FipeTable.Database\Tables\7-FipeVehiclePrice.sql
+		Vasconcellos.FipeTable.Database\8-FipeVehicleInformationDenormalized.sql = Vasconcellos.FipeTable.Database\8-FipeVehicleInformationDenormalized.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasconcellos.FipeTable.ConsoleApp", "Vasconcellos.FipeTable.ConsoleApp\Vasconcellos.FipeTable.ConsoleApp.csproj", "{0DBBB400-FD43-4FE5-BDA7-49F9CE468A4D}"
