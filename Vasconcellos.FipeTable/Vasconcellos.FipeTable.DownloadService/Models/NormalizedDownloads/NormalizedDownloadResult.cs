@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Vasconcellos.FipeTable.Types.Entities;
+using Vasconcellos.FipeTable.Types.Entities.Denormalized;
 using Vasconcellos.FipeTable.Types.Enums;
 
 namespace Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads
@@ -12,7 +13,8 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads
             List<FipeVehicleBrand> brands,
             List<FipeVehicleModel> models, 
             List<FipeVehicleInformation> vehicles, 
-            List<FipeVehiclePrice> prices)
+            List<FipeVehiclePrice> prices,
+            List<FipeVehicleInformationDenormalized> vehiclesDenormalized)
         {
             this.FipeReference = fipeReference;
             this.VehicleType = vehicleType;
@@ -20,6 +22,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads
             this.Models = models.AsReadOnly();
             this.Vehicles = vehicles.AsReadOnly();
             this.Prices = prices.AsReadOnly();
+            this.VehiclesDenormalized = vehiclesDenormalized.AsReadOnly();
         }
 
         public FipeReference FipeReference { get; private set; }
@@ -28,5 +31,6 @@ namespace Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads
         public IList<FipeVehicleModel> Models { get; private set; }
         public IList<FipeVehicleInformation> Vehicles { get; private set; }
         public IList<FipeVehiclePrice> Prices { get; private set; }
+        public IList<FipeVehicleInformationDenormalized> VehiclesDenormalized { get; private set; }
     }
 }

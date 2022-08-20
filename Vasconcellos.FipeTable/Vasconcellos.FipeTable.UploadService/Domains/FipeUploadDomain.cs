@@ -5,6 +5,7 @@ using MongoDB.Driver;
 using System.Linq;
 using Vasconcellos.FipeTable.Types.Entities;
 using Vasconcellos.FipeTable.UploadService.Domains.Interfaces;
+using Vasconcellos.FipeTable.Types.Entities.Denormalized;
 
 namespace Vasconcellos.FipeTable.UploadService.Domains
 {
@@ -85,6 +86,19 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
                 return false;
 
             return await this._repository.InsertManyAsync(pricesInserted);
+        }
+
+        public async Task<bool> SaveVehiclesDenormalized(IList<FipeVehicleInformationDenormalized> vehicles)
+        {
+            var vehiclesSelected = await this._repository.GetAllAsync<FipeVehicleInformationDenormalized>();
+            var vehiclesInserted = vehicles
+                .Where(x => !vehiclesSelected.Any(y => x.Id == y.Id))
+                .ToList();
+
+            if (vehiclesInserted.Count == 0)
+                return false;
+
+            return await this._repository.InsertManyAsync(vehiclesInserted);
         }
     }
 }
