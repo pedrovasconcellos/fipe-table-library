@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
 using Vasconcellos.FipeTable.Types.Entities;
+using Vasconcellos.FipeTable.Types.Entities.Denormalized;
 using Vasconcellos.FipeTable.Types.Enums;
 using Vasconcellos.FipeTable.UploadService.Domains.Interfaces;
 using Vasconcellos.FipeTable.UploadService.Services.Interfaces;
@@ -66,6 +67,7 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             var models = fipeTable.Models;
             var vehicle = fipeTable.Vehicles;
             var prices = fipeTable.Prices;
+            var vehicleDenormalized = fipeTable.VehiclesDenormalized;
 
             await this._uploadDomain.SaveFipeReference(fipeReference);
 
@@ -81,6 +83,9 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             if (prices != null && prices.Count > 0)
                 await this._uploadDomain.SavePrices(prices);
 
+            if (vehicleDenormalized != null && vehicleDenormalized.Count > 0)
+                await this._uploadDomain.SaveVehiclesDenormalized(vehicleDenormalized);
+
             return true;
         }
 
@@ -88,7 +93,8 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             IList<FipeVehicleBrand> Brands, 
             IList<FipeVehicleModel> Models, 
             IList<FipeVehicleInformation> Vehicles, 
-            IList<FipeVehiclePrice> Prices)
+            IList<FipeVehiclePrice> Prices,
+            IList<FipeVehicleInformationDenormalized> VehiclesDenormalized)
             GetDataFipeTable(int fipeReferenceId)
         {
             var trucks = this.GetDataFipeTable(FipeVehicleTypesEnum.TruckAndMicroBus, fipeReferenceId);
@@ -107,14 +113,16 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             var models = this.Join(trucks.Models, motorcycles.Models, cars.Models);
             var vehicle = this.Join(trucks.Vehicles, motorcycles.Vehicles, cars.Vehicles);
             var prices = this.Join(trucks.Prices, motorcycles.Prices, cars.Prices);
+            var vehicleDenormalized = this.Join(trucks.VehiclesDenormalized, motorcycles.VehiclesDenormalized, cars.VehiclesDenormalized);
 
             this.LogQuantity(nameof(fipeReferenceId), fipeReferenceId);
             this.LogQuantity(nameof(brands), brands.Count);
             this.LogQuantity(nameof(models), models.Count);
             this.LogQuantity(nameof(vehicle), vehicle.Count);
             this.LogQuantity(nameof(prices), prices.Count);
+            this.LogQuantity(nameof(vehicleDenormalized), vehicleDenormalized.Count);
 
-            return (trucks.FipeReference, brands, models, vehicle, prices);
+            return (trucks.FipeReference, brands, models, vehicle, prices, vehicleDenormalized);
         }
 
         private NormalizedDownloadResult GetDataFipeTable(FipeVehicleTypesEnum vehicleType, int referenceId)

@@ -22,8 +22,12 @@
 
   <ItemGroup>
     <Folder Include="Exceptions\" />
+    <Folder Include="Entities\Denormalized\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Entities\Denormalized\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE.txt">
       <Pack>True</Pack>
