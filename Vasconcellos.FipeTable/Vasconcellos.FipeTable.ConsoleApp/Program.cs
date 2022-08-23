@@ -48,7 +48,7 @@ namespace Vasconcellos.FipeTable.ConsoleApp
 
         private static void InitConnectionStrig()
         {
-            _connectionString = Environment.GetEnvironmentVariable("Vasconcellos.FipeTable.ConsoleApp.MongoDB");
+            _connectionString = Environment.GetEnvironmentVariable("Vasconcellos_FipeTable_ConsoleApp_MongoDB");
 
             if (string.IsNullOrEmpty(_connectionString))
                 throw new ArgumentException($"The {nameof(_connectionString)} cannot be null or empty");
