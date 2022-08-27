@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 using Vasconcellos.FipeTable.DownloadService.Services;
@@ -26,13 +27,13 @@ namespace Vasconcellos.FipeTable.ConsoleApp
         private static IFipeUploadDomain _uploadDomain;
         private static IFipeUploadService _uploadService;
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Init();
             
             _logger.LogInformation("Starting Console FIPE TABLE.");
 
-            _uploadService.ProcessUpload().Wait();
+            await _uploadService.ProcessUpload();
 
             _logger.LogInformation("Finalizing Console FIPE TABLE.");
             Console.ReadKey();
