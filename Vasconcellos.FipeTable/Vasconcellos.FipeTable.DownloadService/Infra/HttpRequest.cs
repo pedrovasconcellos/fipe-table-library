@@ -56,8 +56,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
                 restRequest.AddHeader(requestHeader.Key, requestHeader.Value);
 
             var result = new RestClient(this._settings.ServiceUrl).Post<T>(restRequest);
-            this._logger.LogDebug("Request response. Method={method}; ResponseObject={@responseObject};",
-                nameof(this.HttpPost), result.Data);
+            this._logger.LogDebug($"Request response. Method={nameof(this.HttpPost)}; Response={JsonSerializer.Serialize(result.Data)};");
 
             if (!result.IsSuccessful)
                 return new T();
