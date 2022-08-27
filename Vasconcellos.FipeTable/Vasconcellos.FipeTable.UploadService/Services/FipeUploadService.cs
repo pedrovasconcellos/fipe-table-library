@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
@@ -65,28 +66,55 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             var fipeReference = fipeTable.FipeReference;
             var brands = fipeTable.Brands;
             var models = fipeTable.Models;
-            var vehicle = fipeTable.Vehicles;
+            var vehicles = fipeTable.Vehicles;
             var prices = fipeTable.Prices;
-            var vehicleDenormalized = fipeTable.VehiclesDenormalized;
+            var vehiclesDenormalized = fipeTable.VehiclesDenormalized;
 
-            await this._uploadDomain.SaveFipeReference(fipeReference);
-
-            if (brands != null && brands.Count > 0)
-                await this._uploadDomain.SaveVehicleBrands(brands);
-
-            if (models != null && models.Count > 0)
-                await this._uploadDomain.SaveVehicleModels(models);
-
-            if (vehicle != null && vehicle.Count > 0)
-                await this._uploadDomain.SaveVehicles(vehicle);
-
-            if (prices != null && prices.Count > 0)
-                await this._uploadDomain.SavePrices(prices);
-
-            if (vehicleDenormalized != null && vehicleDenormalized.Count > 0)
-                await this._uploadDomain.SaveVehiclesDenormalized(vehicleDenormalized);
+            var notSaved = true;
+            var retry = 3;
+            while (notSaved && retry-- > 0)
+            {
+                var saved = await this.SaveAll(fipeReference, brands, models, vehicles, prices, vehiclesDenormalized);
+                Thread.Sleep(3000);
+                notSaved = !saved;
+            }
 
             return true;
+        }
+
+        private async Task<bool> SaveAll(FipeReference fipeReference,
+            IList<FipeVehicleBrand> brands,
+            IList<FipeVehicleModel> models,
+            IList<FipeVehicleInformation> vehicles,
+            IList<FipeVehiclePrice> prices,
+            IList<FipeVehicleInformationDenormalized> vehiclesDenormalized)
+        {
+            try
+            {
+                await this._uploadDomain.SaveFipeReference(fipeReference);
+
+                if (brands != null && brands.Count > 0)
+                    await this._uploadDomain.SaveVehicleBrands(brands);
+
+                if (models != null && models.Count > 0)
+                    await this._uploadDomain.SaveVehicleModels(models);
+
+                if (vehicles != null && vehicles.Count > 0)
+                    await this._uploadDomain.SaveVehicles(vehicles);
+
+                if (prices != null && prices.Count > 0)
+                    await this._uploadDomain.SavePrices(prices);
+
+                if (vehiclesDenormalized != null && vehiclesDenormalized.Count > 0)
+                    await this._uploadDomain.SaveVehiclesDenormalized(vehiclesDenormalized);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Save ERROR: Message={message}", ex.Message);
+                return false;
+            }
         }
 
         private (FipeReference FipeReference,
