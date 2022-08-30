@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>4.0.0</Version>
-    <Copyright>Copyright (c) 2021 Pedro Vasconcellos</Copyright>
+    <Version>4.1.0</Version>
+    <Copyright>Copyright (c) 2022 Pedro Vasconcellos</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
