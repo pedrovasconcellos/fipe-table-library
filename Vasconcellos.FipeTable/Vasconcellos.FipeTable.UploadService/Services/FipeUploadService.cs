@@ -91,6 +91,8 @@ namespace Vasconcellos.FipeTable.UploadService.Services
         {
             try
             {
+                _logger.LogInformation("Starting the data storage process. Please wait for the execution to finish");
+
                 await this._uploadDomain.SaveFipeReference(fipeReference);
 
                 if (brands != null && brands.Count > 0)
@@ -107,6 +109,8 @@ namespace Vasconcellos.FipeTable.UploadService.Services
 
                 if (vehiclesDenormalized != null && vehiclesDenormalized.Count > 0)
                     await this._uploadDomain.SaveVehiclesDenormalized(vehiclesDenormalized);
+
+                _logger.LogInformation("All data has been saved. Please wait until the execution finishes");
 
                 return true;
             }
