@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
 using Vasconcellos.FipeTable.DownloadService.Models.Responses;
 using Vasconcellos.FipeTable.DownloadService.Profiles;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
+using Vasconcellos.FipeTable.Types.Entities.Denormalized;
 using Vasconcellos.FipeTable.Types.Enums;
 
 namespace Vasconcellos.FipeTable.DownloadService.Services
@@ -66,7 +69,8 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                 tupleEntities.Brands, 
                 tupleEntities.Models,
                 tuple.Vehicles,
-                tuple.Prices);
+                tuple.Prices,
+                tuple.VehiclesDenormalized);
         }
     }
 }

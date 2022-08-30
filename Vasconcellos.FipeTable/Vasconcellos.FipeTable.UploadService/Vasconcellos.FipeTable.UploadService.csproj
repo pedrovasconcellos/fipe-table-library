@@ -2,25 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>4.0.0</Version>
+    <Version>4.1.0</Version>
     <Company>Pedro Henrique Vasconcellos</Company>
     <Authors>Pedro Henrique Vasconcellos</Authors>
     <Description>Library to upload the data from the fipe table in the database through FIPE Web API. Save the data from the fipe table on Mongodb</Description>
-    <Copyright>Copyright (c) 2021 Pedro Vasconcellos</Copyright>
+    <Copyright>Copyright (c) 2022 Pedro Vasconcellos</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/pedrovasconcellos/fipe-table-library</PackageProjectUrl>
     <PackageIcon>vasconcellos-solutions.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/pedrovasconcellos/fipe-table-library</RepositoryUrl>
     <RepositoryType>Open Source</RepositoryType>
     <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Table Upload Download MongoDB Database</PackageTags>
-    <PackageReleaseNotes>Release version</PackageReleaseNotes>
+    <PackageReleaseNotes>Add vehicle denormalized model entity and new implementations</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
   </ItemGroup>
 
   <ItemGroup>
