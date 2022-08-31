@@ -2,7 +2,7 @@
 
 ## Description
 ### Library for using vehicles data from the FIPE table.
-#### Version 4.4.0.
+#### Version 4.5.0.
 #### License: MIT License
 #### Copyright (c) 2022 Pedro Vasconcellos
 ##### Author: Pedro Henrique Vasconcellos
