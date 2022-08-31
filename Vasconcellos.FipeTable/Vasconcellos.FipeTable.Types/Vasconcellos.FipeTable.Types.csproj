@@ -9,11 +9,11 @@
     <PackageProjectUrl>https://github.com/pedrovasconcellos/fipe-table-library</PackageProjectUrl>
     <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Fipe Table Model Entity Modelo Entidade</PackageTags>
     <Title>Fipe table entities library</Title>
-    <Version>4.2.0</Version>
+    <Version>4.3.0</Version>
     <PackageIcon>vasconcellos-solutions.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/pedrovasconcellos/fipe-table-library</RepositoryUrl>
     <RepositoryType>Open Source</RepositoryType>
-    <PackageReleaseNotes>Add vehicle denormalized model entity and new implementations</PackageReleaseNotes>
+    <PackageReleaseNotes>Add reference date</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

@@ -5,7 +5,7 @@
     <Description>Library to download the data from the fipe table through FIPE WebAPI.</Description>
     <PackageProjectUrl>https://github.com/pedrovasconcellos/fipe-table-library</PackageProjectUrl>
     <PackageLicenseExpression></PackageLicenseExpression>
-    <PackageReleaseNotes>Add vehicle denormalized model entity and new implementations</PackageReleaseNotes>
+    <PackageReleaseNotes>Add reference date</PackageReleaseNotes>
     <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Table Download</PackageTags>
     <PackageIcon>vasconcellos-solutions.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/pedrovasconcellos/fipe-table-library</RepositoryUrl>
@@ -15,7 +15,7 @@
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Owners>Pedro Henrique Vasconcellos</Owners>
     <Title>FIPE table download service</Title>
-    <Version>4.2.0</Version>
+    <Version>4.3.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>

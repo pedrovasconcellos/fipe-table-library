@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>4.2.0</Version>
+    <Version>4.3.0</Version>
     <Company>Pedro Henrique Vasconcellos</Company>
     <Authors>Pedro Henrique Vasconcellos</Authors>
     <Description>Library to upload the data from the fipe table in the database through FIPE Web API. Save the data from the fipe table on Mongodb</Description>
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/pedrovasconcellos/fipe-table-library</RepositoryUrl>
     <RepositoryType>Open Source</RepositoryType>
     <PackageTags>Tabela Fipe Veiculo Veículo Vehicle Table Upload Download MongoDB Database</PackageTags>
-    <PackageReleaseNotes>Add vehicle denormalized model entity and new implementations</PackageReleaseNotes>
+    <PackageReleaseNotes>Add reference date</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
