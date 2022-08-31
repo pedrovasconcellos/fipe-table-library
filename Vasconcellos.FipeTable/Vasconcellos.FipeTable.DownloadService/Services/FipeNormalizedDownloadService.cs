@@ -60,7 +60,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
             this._logger.LogDebug($"Brands and models of normalized vehicles. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceId={referenceId};");
 
             var vehicles = await this._downloadService.GetVehicles(fipeTable);
-            var tuple = vehicles.ModelToEntity();
+            var tuple = vehicles.ModelToEntity(selectedReference);
 
             this._logger.LogDebug($"Normalized vehicles. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceId={referenceId};");
 

@@ -9,7 +9,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Profiles
     public static class FipeVehicleProfile
     {
         public static (List<FipeVehicleInformation> Vehicles, List<FipeVehiclePrice> Prices, List<FipeVehicleInformationDenormalized> VehiclesDenormalized)
-            ModelToEntity(this IEnumerable<Vehicle> vehicles)
+            ModelToEntity(this IEnumerable<Vehicle> vehicles, FipeReference fipeReference)
         {
             var vehiclesEntity = new List<FipeVehicleInformation>();
             var vehiclesDenormalizedEntity = new List<FipeVehicleInformationDenormalized>();
@@ -23,7 +23,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Profiles
                 var vehicleDenormalizedEntity = GetFipeVehicleInformationDenormalized(vehicle, vehicleEntity);
                 vehiclesDenormalizedEntity.Add(vehicleDenormalizedEntity);
 
-                var priceEntity = GetFipeVehiclePrice(vehicle, vehicleEntity);
+                var priceEntity = GetFipeVehiclePrice(vehicle, vehicleEntity, fipeReference);
                 pricesEntity.Add(priceEntity);
             }
 
@@ -56,10 +56,11 @@ namespace Vasconcellos.FipeTable.DownloadService.Profiles
         }
 
         private static FipeVehiclePrice GetFipeVehiclePrice(
-            Vehicle vehicle, FipeVehicleInformation vehicleEntity)
+            Vehicle vehicle, FipeVehicleInformation vehicleEntity, FipeReference fipeReference)
         {
             return new FipeVehiclePrice(
-                    vehicle.ReferenceId,
+                    fipeReference.Id,
+                    fipeReference.ReferenceDate,
                     vehicleEntity.Id,
                     vehicle.Value);
         }
