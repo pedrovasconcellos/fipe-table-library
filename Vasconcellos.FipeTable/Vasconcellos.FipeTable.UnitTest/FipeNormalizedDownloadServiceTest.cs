@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
@@ -42,9 +43,9 @@ namespace Vasconcellos.FipeTable.UnitTest
         //[InlineData(FipeVehicleTypesEnum.Car, 266)]
         //[InlineData(FipeVehicleTypesEnum.Motorcycle, 266)]
         [InlineData(FipeVehicleTypesEnum.TruckAndMicroBus, 266)]
-        public void GetDataFromFipeTableByVehicleTypeTest(FipeVehicleTypesEnum vehicleType, int referenceId)
+        public async Task GetDataFromFipeTableByVehicleTypeTest(FipeVehicleTypesEnum vehicleType, int referenceId)
         {
-            var result = this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceId);
+            var result = await this._normalizedDownloadService.GetDataFromFipeTableByVehicleType(vehicleType, referenceId);
             var condition = false;
             var message = "The download of normalized FIPE data was not successful. VehicleType=";
 
@@ -76,10 +77,10 @@ namespace Vasconcellos.FipeTable.UnitTest
                     Assert.True(
                         result.VehicleType == vehicleType
                         && result.FipeReference.Id == referenceId
-                        && result.Brands.Count > 0
+                        && result.Brands.Any()
                         && result.Brands.Any(x => x.VehicleTypeId == vehicleType)
-                        && result.Models.Count > 0
-                        && result.Vehicles.Count > 0
+                        && result.Models.Any()
+                        && result.Vehicles.Any()
                         && result.Vehicles.Any(x => x.IsValid)
                         && result.Prices.Any(x => x.Value > 0)
                         , $"The download of normalized FIPE data was not successful. VehicleType={vehicleType};");

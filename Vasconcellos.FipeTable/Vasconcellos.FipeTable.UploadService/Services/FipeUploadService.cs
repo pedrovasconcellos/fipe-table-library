@@ -42,7 +42,7 @@ namespace Vasconcellos.FipeTable.UploadService.Services
         /// <returns>Task<bool></returns>
         public async Task<bool> ProcessUpload(int fipeReferenceId = 0, bool processingForce = false)
         {
-            var lastFipeReference = _downloadService.GetFipeTableReference(fipeReferenceId);
+            var lastFipeReference = await _downloadService.GetFipeTableReference(fipeReferenceId);
             if (lastFipeReference == null || lastFipeReference.Id < 1)
             {
                 _logger.LogInformation(
@@ -62,7 +62,7 @@ namespace Vasconcellos.FipeTable.UploadService.Services
                 return false;
             }
 
-            var fipeTable = this.GetDataFipeTable(fipeReferenceIdSelected);
+            var fipeTable = await this.GetDataFipeTable(fipeReferenceIdSelected);
             var fipeReference = fipeTable.FipeReference;
             var brands = fipeTable.Brands;
             var models = fipeTable.Models;
@@ -121,17 +121,17 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             }
         }
 
-        private (FipeReference FipeReference,
+        private async Task<(FipeReference FipeReference,
             IList<FipeVehicleBrand> Brands, 
             IList<FipeVehicleModel> Models, 
             IList<FipeVehicleInformation> Vehicles, 
             IList<FipeVehiclePrice> Prices,
-            IList<FipeVehicleInformationDenormalized> VehiclesDenormalized)
+            IList<FipeVehicleInformationDenormalized> VehiclesDenormalized)>
             GetDataFipeTable(int fipeReferenceId)
         {
-            var trucks = this.GetDataFipeTable(FipeVehicleTypesEnum.TruckAndMicroBus, fipeReferenceId);
-            var motorcycles = this.GetDataFipeTable(FipeVehicleTypesEnum.Motorcycle, fipeReferenceId);
-            var cars = this.GetDataFipeTable(FipeVehicleTypesEnum.Car, fipeReferenceId);
+            var trucks = await this.GetDataFipeTable(FipeVehicleTypesEnum.TruckAndMicroBus, fipeReferenceId);
+            var motorcycles = await this.GetDataFipeTable(FipeVehicleTypesEnum.Motorcycle, fipeReferenceId);
+            var cars = await this.GetDataFipeTable(FipeVehicleTypesEnum.Car, fipeReferenceId);
 
             var referenceIdValid = this.ReferenceIdValid(trucks, motorcycles, cars);
             if (!referenceIdValid)
@@ -157,9 +157,9 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             return (trucks.FipeReference, brands, models, vehicle, prices, vehicleDenormalized);
         }
 
-        private NormalizedDownloadResult GetDataFipeTable(FipeVehicleTypesEnum vehicleType, int referenceId)
+        private async Task<NormalizedDownloadResult> GetDataFipeTable(FipeVehicleTypesEnum vehicleType, int referenceId)
         {
-            var downloadResult = this._normalizedDownloadService
+            var downloadResult = await this._normalizedDownloadService
                 .GetDataFromFipeTableByVehicleType(vehicleType, referenceId);
 
             if (downloadResult.VehicleType == vehicleType

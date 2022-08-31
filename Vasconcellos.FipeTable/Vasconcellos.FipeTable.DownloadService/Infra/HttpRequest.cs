@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 using System;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Vasconcellos.FipeTable.DownloadService.Infra
 {
@@ -18,7 +20,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
             this._settings = settings;
         }
 
-        public T Post<T>(string endPoint, object requestObject) where T : new()
+        public async Task<T> Post<T>(string endPoint, object requestObject) where T : new()
         {
             this._logger.LogDebug("Starting http[post]. Method={method}; EndPoint={endPoint}; RequestObject={@requestObject};",
                 nameof(this.Post), endPoint, requestObject);
@@ -28,7 +30,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
             {
                 try
                 {
-                    return this.HttpPost<T>(endPoint, requestObject);
+                    return await this.HttpPost<T>(endPoint, requestObject);
                 }
                 catch(Exception ex)
                 {
@@ -44,24 +46,27 @@ namespace Vasconcellos.FipeTable.DownloadService.Infra
             return new T();
         }
 
-        private T HttpPost<T>(string endPoint, object requestObject) where T : new()
+        private async Task<T> HttpPost<T>(string endPoint, object requestObject) where T : new()
         {
-            var restRequest = new RestRequest(endPoint, Method.POST)
+            var restRequest = new RestRequest(endPoint, Method.Post);
+
+            if(requestObject != null)
             {
-                RequestFormat = DataFormat.Json
+                restRequest.RequestFormat = DataFormat.Json;
+                restRequest.AddJsonBody(requestObject);
             }
-            .AddJsonBody(requestObject);
 
             foreach (var requestHeader in this._settings.RequestHeaders)
                 restRequest.AddHeader(requestHeader.Key, requestHeader.Value);
 
-            var result = new RestClient(this._settings.ServiceUrl).Post<T>(restRequest);
-            this._logger.LogDebug($"Request response. Method={nameof(this.HttpPost)}; Response={JsonSerializer.Serialize(result.Data)};");
+            var result = await new RestClient(this._settings.ServiceUrl).PostAsync(restRequest);
+            var resultObj = JsonConvert.DeserializeObject<T>(result.Content);
+            this._logger.LogDebug($"Request response. Method={nameof(this.HttpPost)}; Response={result.Content};");
 
-            if (!result.IsSuccessful)
+            if (resultObj == null)
                 return new T();
 
-            return result.Data;
+            return resultObj;
         }
     }
 }
