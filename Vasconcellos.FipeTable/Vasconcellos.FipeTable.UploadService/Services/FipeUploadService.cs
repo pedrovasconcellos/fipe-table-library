@@ -20,10 +20,11 @@ namespace Vasconcellos.FipeTable.UploadService.Services
         private readonly IFipeDownloadService _downloadService;
         private readonly IFipeNormalizedDownloadService _normalizedDownloadService;
         private readonly IFipeUploadDomain _uploadDomain;
+        private const int threadSlepTimer = 30000;
 
         public FipeUploadService(
-            ILogger logger, 
-            IFipeDownloadService downloadService, 
+            ILogger logger,
+            IFipeDownloadService downloadService,
             IFipeNormalizedDownloadService normalizedDownloadService,
             IFipeUploadDomain uploadDomain)
         {
@@ -42,7 +43,7 @@ namespace Vasconcellos.FipeTable.UploadService.Services
         /// <returns>Task<bool></returns>
         public async Task<bool> ProcessUpload(int fipeReferenceId = 0, bool processingForce = false)
         {
-            var lastFipeReference = _downloadService.GetFipeTableReference(fipeReferenceId);
+            var lastFipeReference = await _downloadService.GetFipeTableReference(fipeReferenceId);
             if (lastFipeReference == null || lastFipeReference.Id < 1)
             {
                 _logger.LogInformation(
@@ -62,7 +63,7 @@ namespace Vasconcellos.FipeTable.UploadService.Services
                 return false;
             }
 
-            var fipeTable = this.GetDataFipeTable(fipeReferenceIdSelected);
+            var fipeTable = await this.GetDataFipeTable(fipeReferenceIdSelected);
             var fipeReference = fipeTable.FipeReference;
             var brands = fipeTable.Brands;
             var models = fipeTable.Models;
@@ -70,68 +71,29 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             var prices = fipeTable.Prices;
             var vehiclesDenormalized = fipeTable.VehiclesDenormalized;
 
-            var notSaved = true;
+            var saved = false;
             var retry = 3;
-            while (notSaved && retry-- > 0)
+            while (!saved && retry-- > 0)
             {
-                var saved = await this.SaveAll(fipeReference, brands, models, vehicles, prices, vehiclesDenormalized);
-                Thread.Sleep(3000);
-                notSaved = !saved;
+                saved = await this.SaveAll(fipeReference, brands, models, vehicles, prices, vehiclesDenormalized);
+                if (!saved)
+                    Thread.Sleep(threadSlepTimer);
             }
 
-            return true;
+            return saved;
         }
 
-        private async Task<bool> SaveAll(FipeReference fipeReference,
-            IList<FipeVehicleBrand> brands,
-            IList<FipeVehicleModel> models,
-            IList<FipeVehicleInformation> vehicles,
-            IList<FipeVehiclePrice> prices,
-            IList<FipeVehicleInformationDenormalized> vehiclesDenormalized)
-        {
-            try
-            {
-                _logger.LogInformation("Starting the data storage process. Please wait for the execution to finish");
-
-                await this._uploadDomain.SaveFipeReference(fipeReference);
-
-                if (brands != null && brands.Count > 0)
-                    await this._uploadDomain.SaveVehicleBrands(brands);
-
-                if (models != null && models.Count > 0)
-                    await this._uploadDomain.SaveVehicleModels(models);
-
-                if (vehicles != null && vehicles.Count > 0)
-                    await this._uploadDomain.SaveVehicles(vehicles);
-
-                if (prices != null && prices.Count > 0)
-                    await this._uploadDomain.SavePrices(prices);
-
-                if (vehiclesDenormalized != null && vehiclesDenormalized.Count > 0)
-                    await this._uploadDomain.SaveVehiclesDenormalized(vehiclesDenormalized);
-
-                _logger.LogInformation("All data has been saved. Please wait until the execution finishes");
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Save ERROR: Message={message}", ex.Message);
-                return false;
-            }
-        }
-
-        private (FipeReference FipeReference,
+        private async Task<(FipeReference FipeReference,
             IList<FipeVehicleBrand> Brands, 
             IList<FipeVehicleModel> Models, 
             IList<FipeVehicleInformation> Vehicles, 
             IList<FipeVehiclePrice> Prices,
-            IList<FipeVehicleInformationDenormalized> VehiclesDenormalized)
+            IList<FipeVehicleInformationDenormalized> VehiclesDenormalized)>
             GetDataFipeTable(int fipeReferenceId)
         {
-            var trucks = this.GetDataFipeTable(FipeVehicleTypesEnum.TruckAndMicroBus, fipeReferenceId);
-            var motorcycles = this.GetDataFipeTable(FipeVehicleTypesEnum.Motorcycle, fipeReferenceId);
-            var cars = this.GetDataFipeTable(FipeVehicleTypesEnum.Car, fipeReferenceId);
+            var trucks = await this.GetDataFipeTable(FipeVehicleTypesEnum.TruckAndMicroBus, fipeReferenceId);
+            var motorcycles = await this.GetDataFipeTable(FipeVehicleTypesEnum.Motorcycle, fipeReferenceId);
+            var cars = await this.GetDataFipeTable(FipeVehicleTypesEnum.Car, fipeReferenceId);
 
             var referenceIdValid = this.ReferenceIdValid(trucks, motorcycles, cars);
             if (!referenceIdValid)
@@ -157,19 +119,72 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             return (trucks.FipeReference, brands, models, vehicle, prices, vehicleDenormalized);
         }
 
-        private NormalizedDownloadResult GetDataFipeTable(FipeVehicleTypesEnum vehicleType, int referenceId)
+        private async Task<NormalizedDownloadResult> GetDataFipeTable(FipeVehicleTypesEnum vehicleType, int referenceId)
         {
-            var downloadResult = this._normalizedDownloadService
+            var downloadResult = await this._normalizedDownloadService
                 .GetDataFromFipeTableByVehicleType(vehicleType, referenceId);
 
             if (downloadResult.VehicleType == vehicleType
                 && downloadResult.FipeReference.Id == referenceId
-                && downloadResult.Brands.Count > 0
-                && downloadResult.Models.Count > 0
-                && downloadResult.Vehicles.Count > 0)
+                && downloadResult.Brands.Any()
+                && downloadResult.Models.Any()
+                && downloadResult.Vehicles.Any())
                 return downloadResult;
             else
                 throw new ArgumentNullException($"{nameof(downloadResult)}={downloadResult}");
+        }
+
+        private async Task<bool> SaveAll(FipeReference fipeReference,
+            IList<FipeVehicleBrand> brands,
+            IList<FipeVehicleModel> models,
+            IList<FipeVehicleInformation> vehicles,
+            IList<FipeVehiclePrice> prices,
+            IList<FipeVehicleInformationDenormalized> vehiclesDenormalized)
+        {
+            _logger.LogInformation("Starting the data storage process. Please wait for the execution to finish");
+
+            await this.FuncSaveExecuteAsync(fipeReference, this._uploadDomain.SaveFipeReference);
+
+            await this.FuncSaveExecuteAsync(brands, this._uploadDomain.SaveVehicleBrands);
+
+            await this.FuncSaveExecuteAsync(models, this._uploadDomain.SaveVehicleModels);
+
+            await this.FuncSaveExecuteAsync(vehicles, this._uploadDomain.SaveVehicles);
+
+            await this.FuncSaveExecuteAsync(prices, this._uploadDomain.SavePrices);
+
+            await this.FuncSaveExecuteAsync(vehiclesDenormalized, this._uploadDomain.SaveVehiclesDenormalized);
+
+            _logger.LogInformation("All data has been saved. Please wait until the execution finishes");
+
+            return true;
+        }
+
+        private async Task<bool> FuncSaveExecuteAsync<T>(T parameter, Func<T, Task<bool>> funcSave)
+        {
+            var saved = false;
+
+            if (IsNotValidParameter(parameter))
+                return saved;
+
+            var funcName = funcSave.Method.Name;
+            var retry = 3;
+
+            while (!saved && retry-- > 0)
+            {
+                _logger.LogInformation("Starting Function Name: {funcName}", funcName);
+
+                saved = await funcSave.Invoke(parameter);
+
+                _logger.LogInformation("Finishing Function Name: {funcName}", funcName);
+
+                if (!saved)
+                    Thread.Sleep(threadSlepTimer);
+                else
+                    return saved;
+            }
+
+            return saved;
         }
 
         private bool ReferenceIdValid(params NormalizedDownloadResult[] paramsDownloadResult)
@@ -188,10 +203,18 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             return true;
         }
 
-        private void LogVehicleNumbers(NormalizedDownloadResult normalizedDownloadResult)
+        private bool IsNotValidParameter<T>(T parameter)
         {
-            _logger.LogInformation(
-                $"{normalizedDownloadResult?.VehicleType.GetDescription()}={normalizedDownloadResult?.Vehicles?.Count}");
+            if (typeof(T).Name.Contains("List`1"))
+            {
+                if (parameter == null || (parameter as dynamic).Count == 0)
+                    return true;
+            }
+
+            if (parameter == null)
+                return true;
+
+            return false;
         }
 
         private IList<T> Join<T>(params IList<T>[] paramsList)
@@ -205,6 +228,12 @@ namespace Vasconcellos.FipeTable.UploadService.Services
                 }
             }
             return resultList;
+        }
+
+        private void LogVehicleNumbers(NormalizedDownloadResult normalizedDownloadResult)
+        {
+            _logger.LogInformation(
+                $"{normalizedDownloadResult?.VehicleType.GetDescription()}={normalizedDownloadResult?.Vehicles?.Count}");
         }
 
         private void LogQuantity(string description, int count)

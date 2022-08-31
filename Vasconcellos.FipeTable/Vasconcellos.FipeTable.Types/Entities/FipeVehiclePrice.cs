@@ -6,29 +6,31 @@ namespace Vasconcellos.FipeTable.Types.Entities
     {
         public FipeVehiclePrice() { }
 
-        public FipeVehiclePrice(int fipeReferenceId, decimal value, FipeVehicleInformation vehicleInformation)
+        public FipeVehiclePrice(int fipeReferenceId, DateTime referenceDate, decimal value, FipeVehicleInformation vehicleInformation)
         {
             var vehicleInformationId = vehicleInformation?.Id ?? string.Empty;
-            this.Builder(fipeReferenceId, vehicleInformationId, value);
+            this.Builder(fipeReferenceId, referenceDate, vehicleInformationId, value);
         }
 
-        public FipeVehiclePrice(int referenceId, string vehicleInformationId, decimal value)
+        public FipeVehiclePrice(int fipeReferenceId, DateTime referenceDate, string vehicleInformationId, decimal value)
         {
-            this.Builder(referenceId, vehicleInformationId, value);
+            this.Builder(fipeReferenceId, referenceDate, vehicleInformationId, value);
         }
 
         public string Id { get; set; }
         public int FipeReferenceId { get; set; }
+        public DateTime ReferenceDate { get; set; }
         public string FipeVehicleInformationId { get; set; }
         public decimal Value { get; set; }
         public bool Active { get; set; }
 
-        private void Builder(int fipeReferenceId, string vehicleInformationId, decimal value)
+        private void Builder(int fipeReferenceId, DateTime referenceDate, string vehicleInformationId, decimal value)
         {
             var id = this.CreateId(fipeReferenceId, vehicleInformationId);
 
             var fipeVehiclePriceIsValid = this.FipeVehiclePriceIsValid(
                 fipeReferenceId,
+                referenceDate,
                 vehicleInformationId,
                 value);
 
@@ -44,6 +46,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
             }
 
             this.FipeReferenceId = fipeReferenceId;
+            this.ReferenceDate = referenceDate;
             this.FipeVehicleInformationId = vehicleInformationId;
             this.Value = value;
         }
@@ -53,10 +56,11 @@ namespace Vasconcellos.FipeTable.Types.Entities
             return $"{fipeReferenceId}-{vehicleInformationId}";
         }
 
-        private bool FipeVehiclePriceIsValid(int fipeReferenceId, string vehicleInformationId, decimal value)
+        private bool FipeVehiclePriceIsValid(int fipeReferenceId, DateTime referenceDate, string vehicleInformationId, decimal value)
         {
             var fipeVehiclePriceIsInvalid = 
                 fipeReferenceId < 1 ||
+                referenceDate == default ||
                 string.IsNullOrEmpty(vehicleInformationId) ||
                 value <= 0;
 
@@ -67,6 +71,7 @@ namespace Vasconcellos.FipeTable.Types.Entities
         {
             return this.FipeVehiclePriceIsValid(
                 this.FipeReferenceId,
+                this.ReferenceDate,
                 this.FipeVehicleInformationId,
                 this.Value);
         }

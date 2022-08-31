@@ -2,6 +2,7 @@ CREATE TABLE FipeVehiclePrice
 (
     Id VARCHAR(50) NOT NULL PRIMARY KEY,
     FipeReferenceId INT NOT NULL,
+    [ReferenceDate] DATETIME NOT NULL,
     FipeVehicleInformationId VARCHAR(45) NOT NULL,
     [Value] FLOAT NOT NULL,
     Active BIT NOT NULL DEFAULT(1)

@@ -30,8 +30,8 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
                 .Where(x => !fipeReferencesSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
-            if (fipeReferencesInserted.Count == 0)
-                return false;
+            if (!fipeReferencesInserted.Any())
+                return true;
 
             return await this._repository.InsertOneAsync(fipeReferencesInserted.SingleOrDefault());
         }
@@ -43,8 +43,8 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
                 .Where(x => !brandsSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
-            if (brandsInserted.Count == 0)
-                return false;
+            if (!brandsInserted.Any())
+                return true;
 
             return await this._repository.InsertManyAsync(brandsInserted);
         }
@@ -56,8 +56,8 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
                 .Where(x => !modelsSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
-            if (modelsInserted.Count == 0)
-                return false;
+            if (!modelsInserted.Any())
+                return true;
 
             return await this._repository.InsertManyAsync(modelsInserted);
         }
@@ -69,8 +69,8 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
                 .Where(x => !vehiclesSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
-            if (vehiclesInserted.Count == 0)
-                return false;
+            if (!vehiclesInserted.Any())
+                return true;
 
             return await this._repository.InsertManyAsync(vehiclesInserted);
         }
@@ -82,8 +82,8 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
                 .Where(x => !pricesSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
-            if (pricesInserted.Count == 0)
-                return false;
+            if (!pricesInserted.Any())
+                return true;
 
             return await this._repository.InsertManyAsync(pricesInserted);
         }
@@ -95,8 +95,8 @@ namespace Vasconcellos.FipeTable.UploadService.Domains
                 .Where(x => !vehiclesSelected.Any(y => x.Id == y.Id))
                 .ToList();
 
-            if (vehiclesInserted.Count == 0)
-                return false;
+            if (!vehiclesInserted.Any())
+                return true;
 
             return await this._repository.InsertManyAsync(vehiclesInserted);
         }

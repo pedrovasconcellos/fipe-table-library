@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Vasconcellos.FipeTable.DownloadService.Models.NormalizedDownloads;
 using Vasconcellos.FipeTable.DownloadService.Models.Responses;
@@ -43,23 +44,23 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <param name="vehicleType"></param>
         /// <param name="referenceId"></param>
         /// <returns></returns>
-        public NormalizedDownloadResult GetDataFromFipeTableByVehicleType(FipeVehicleTypesEnum vehicleType, int referenceId = 0)
+        public async Task<NormalizedDownloadResult> GetDataFromFipeTableByVehicleType(FipeVehicleTypesEnum vehicleType, int referenceId = 0)
         {
             this._logger.LogDebug($"Starting method GetDataFromFipeTableByVehicleType. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceId={referenceId};");
 
-            var selectedReference = this._downloadService.GetFipeTableReference(referenceId);
+            var selectedReference = await this._downloadService.GetFipeTableReference(referenceId);
 
             var fipeTable = new FipeDataTable(selectedReference.Id, vehicleType);
 
-            this._downloadService.GetBrands(fipeTable);
-            this._downloadService.GetModels(fipeTable);
-            this._downloadService.GetYearsAndFuels(fipeTable);
+            await this._downloadService.GetBrands(fipeTable);
+            await this._downloadService.GetModels(fipeTable);
+            await this._downloadService.GetYearsAndFuels(fipeTable);
             var tupleEntities = fipeTable.ModelToEntity();
 
             this._logger.LogDebug($"Brands and models of normalized vehicles. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceId={referenceId};");
 
-            var vehicles = this._downloadService.GetVehicles(fipeTable);
-            var tuple = vehicles.ModelToEntity();
+            var vehicles = await this._downloadService.GetVehicles(fipeTable);
+            var tuple = vehicles.ModelToEntity(selectedReference);
 
             this._logger.LogDebug($"Normalized vehicles. Method={nameof(this.GetDataFromFipeTableByVehicleType)}; VehicleType={vehicleType}; ReferenceId={referenceId};");
 

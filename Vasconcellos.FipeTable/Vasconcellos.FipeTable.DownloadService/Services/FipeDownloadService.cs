@@ -7,6 +7,7 @@ using Vasconcellos.FipeTable.DownloadService.Models.Responses;
 using Vasconcellos.FipeTable.DownloadService.Services.Interfaces;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 using Vasconcellos.FipeTable.Types.Entities;
+using System.Threading.Tasks;
 
 namespace Vasconcellos.FipeTable.DownloadService.Services
 {
@@ -34,10 +35,10 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// </summary>
         /// <returns>List<Reference></returns>
         /// <returns>FipeNotFoundException</returns>
-        public List<Reference> GetListReferenceIdFipeTable()
+        public async Task<List<Reference>> GetListReferenceIdFipeTable()
         {
-            var referenceTable = this._http.Post<List<Reference>>("ConsultarTabelaDeReferencia", null);
-            if (referenceTable == null || referenceTable.Count == 0)
+            var referenceTable = await this._http.Post<List<Reference>>("ConsultarTabelaDeReferencia", null);
+            if (referenceTable == null || !referenceTable.Any())
                 throw new FipeNotFoundException($"The FIPE table reference list not found.");
 
             return referenceTable;
@@ -51,19 +52,19 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <returns>int</returns>
         /// <returns>FipeNotFoundException</returns>
         /// <returns>ArgumentException [if request return == 0]</returns>
-        public FipeReference GetFipeTableReference(int requestReferenceId = 0)
+        public async Task<FipeReference> GetFipeTableReference(int requestReferenceId = 0)
         {
-            var referenceTable = this.GetListReferenceIdFipeTable();
+            var referenceTable = await this.GetListReferenceIdFipeTable();
             FipeReference fipeReference;
 
             if (requestReferenceId == 0)
                 fipeReference = referenceTable
-                    .Select(x => new FipeReference{ Id = x.Codigo, DateString = x.Mes })
+                    .Select(x => new FipeReference(x.Codigo, x.ReferenceDate))
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefault();
             else
                 fipeReference = referenceTable
-                    .Select(x => new FipeReference { Id = x.Codigo, DateString = x.Mes })
+                    .Select(x => new FipeReference(x.Codigo, x.ReferenceDate))
                     .SingleOrDefault(x => x.Id == requestReferenceId);
 
             if (fipeReference == null || fipeReference.Id == 0)
@@ -78,12 +79,12 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <param name="fipeTable"></param>
         /// <returns>void</returns>
         /// <returns>FipeNotFoundException</returns>
-        public void GetBrands(FipeDataTable fipeTable)
+        public async Task GetBrands(FipeDataTable fipeTable)
         {
             var objRequest = VehicleRequest.Brand(fipeTable);
 
-            List<Brand> list = this._http.Post<List<Brand>>("ConsultarMarcas", objRequest);
-            if (list == null || list.Count == 0)
+            List<Brand> list = await this._http.Post<List<Brand>>("ConsultarMarcas", objRequest);
+            if (list == null || !list.Any())
                 throw new FipeNotFoundException($"The Brand table not found.");
 
             fipeTable.Brands = list;
@@ -95,15 +96,15 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <param name="fipeTable"></param>
         /// <returns>void</returns>
         /// <returns>FipeNotFoundException</returns>
-        public void GetModels(FipeDataTable fipeTable)
+        public async Task GetModels(FipeDataTable fipeTable)
         {
             foreach (var brand in fipeTable.Brands)
             {
                 var objRequest = VehicleRequest.Model(fipeTable, brand.Value);
 
                 //Note: The AuxModel class was used to standardize the return;
-                AuxModel auxModel = this._http.Post<AuxModel>("ConsultarModelos", objRequest);
-                if (auxModel == null || auxModel.Modelos.Count == 0)
+                AuxModel auxModel = await this._http.Post<AuxModel>("ConsultarModelos", objRequest);
+                if (auxModel == null || !auxModel.Modelos.Any())
                     _logger.LogWarning(
                         $"The Model Brand table not found. ReferenceId={fipeTable.ReferenceId};BrandId={brand.Value};",
                         fipeTable.ReferenceId,
@@ -119,7 +120,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <param name="fipeTable"></param>
         /// <returns>void</returns>
         /// <returns>FipeNotFoundException</returns>
-        public void GetYearsAndFuels(FipeDataTable fipeTable)
+        public async Task GetYearsAndFuels(FipeDataTable fipeTable)
         {
             foreach (var brand in fipeTable.Brands)
             {
@@ -127,8 +128,8 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                 {
                     var objRequest = VehicleRequest.YearAndFuel(fipeTable, brand.Value, model.Value);
 
-                    List<YearAndFuel> list = this._http.Post<List<YearAndFuel>>("ConsultarAnoModelo", objRequest);
-                    if (list == null || list.Count == 0)
+                    List<YearAndFuel> list = await this._http.Post<List<YearAndFuel>>("ConsultarAnoModelo", objRequest);
+                    if (list == null || !list.Any())
                         _logger.LogWarning(
                             $"The Year and Fuel table not found. ReferenceId={fipeTable.ReferenceId};BrandId={brand.Value};ModelId={model.Value};",
                             fipeTable.ReferenceId,
@@ -146,7 +147,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
         /// <param name="fipeTable"></param>
         /// <returns>List<Vehicle></returns>
         /// <returns>FipeNotFoundException</returns>
-        public List<Vehicle> GetVehicles(FipeDataTable fipeTable)
+        public async Task<List<Vehicle>> GetVehicles(FipeDataTable fipeTable)
         {
             List<Vehicle> vehicles = new List<Vehicle>();
 
@@ -158,7 +159,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                     {
                         var objRequest = VehicleRequest.Vehicle(fipeTable, brand.Value, model.Value, yearAndFuel.Year, yearAndFuel.Fuel);
 
-                        Vehicle vehicle = this._http.Post<Vehicle>("ConsultarValorComTodosParametros", objRequest);
+                        Vehicle vehicle = await this._http.Post<Vehicle>("ConsultarValorComTodosParametros", objRequest);
                         if (vehicle == null || string.IsNullOrEmpty(vehicle.CodigoFipe))
                         {
                             _logger.LogWarning(
@@ -178,7 +179,7 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
                 }
             }
 
-            if (vehicles == null || vehicles.Count == 0)
+            if (vehicles == null || !vehicles.Any())
                 throw new FipeNotFoundException($"The Vehicle table not found.");
 
             return vehicles;
