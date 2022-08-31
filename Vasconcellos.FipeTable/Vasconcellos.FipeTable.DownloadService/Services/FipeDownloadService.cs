@@ -59,12 +59,12 @@ namespace Vasconcellos.FipeTable.DownloadService.Services
 
             if (requestReferenceId == 0)
                 fipeReference = referenceTable
-                    .Select(x => new FipeReference{ Id = x.Codigo, DateString = x.Mes })
+                    .Select(x => new FipeReference(x.Codigo, x.Mes, x.ReferenceDate))
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefault();
             else
                 fipeReference = referenceTable
-                    .Select(x => new FipeReference { Id = x.Codigo, DateString = x.Mes })
+                    .Select(x => new FipeReference(x.Codigo, x.Mes, x.ReferenceDate))
                     .SingleOrDefault(x => x.Id == requestReferenceId);
 
             if (fipeReference == null || fipeReference.Id == 0)
