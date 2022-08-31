@@ -8,15 +8,13 @@ namespace Vasconcellos.FipeTable.Types.Entities
     {
         public FipeReference() { }
 
-        public FipeReference(int fipeReferenceId, string dateString, DateTime referenceDate) 
+        public FipeReference(int fipeReferenceId, DateTime referenceDate) 
         {
             this.Id = fipeReferenceId;
-            this.DateString = dateString;
             this.ReferenceDate = referenceDate;
         }
 
         public int Id { get; set; }
-        public string DateString { get; set; }
         public DateTime ReferenceDate { get; set; }
     }
 }
