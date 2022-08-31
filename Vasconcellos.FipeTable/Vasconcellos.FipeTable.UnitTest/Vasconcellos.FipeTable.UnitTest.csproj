@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Version>4.4.0</Version>
+    <Version>4.5.0</Version>
 
     <Copyright>Copyright (c) 2022 Pedro Vasconcellos</Copyright>
   </PropertyGroup>

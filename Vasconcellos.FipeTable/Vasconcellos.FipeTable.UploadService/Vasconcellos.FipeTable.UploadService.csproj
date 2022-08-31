@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>4.4.0</Version>
+    <Version>4.5.0</Version>
     <Company>Pedro Henrique Vasconcellos</Company>
     <Authors>Pedro Henrique Vasconcellos</Authors>
     <Description>Library to upload the data from the fipe table in the database through FIPE Web API. Save the data from the fipe table on Mongodb</Description>
