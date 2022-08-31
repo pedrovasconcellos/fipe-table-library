@@ -71,16 +71,16 @@ namespace Vasconcellos.FipeTable.UploadService.Services
             var prices = fipeTable.Prices;
             var vehiclesDenormalized = fipeTable.VehiclesDenormalized;
 
-            var notSaved = true;
+            var saved = false;
             var retry = 3;
-            while (notSaved && retry-- > 0)
+            while (!saved && retry-- > 0)
             {
-                var saved = await this.SaveAll(fipeReference, brands, models, vehicles, prices, vehiclesDenormalized);
-                Thread.Sleep(threadSlepTimer);
-                notSaved = !saved;
+                saved = await this.SaveAll(fipeReference, brands, models, vehicles, prices, vehiclesDenormalized);
+                if (!saved)
+                    Thread.Sleep(threadSlepTimer);
             }
 
-            return true;
+            return saved;
         }
 
         private async Task<(FipeReference FipeReference,
@@ -162,29 +162,29 @@ namespace Vasconcellos.FipeTable.UploadService.Services
 
         private async Task<bool> FuncSaveExecuteAsync<T>(T parameter, Func<T, Task<bool>> funcSave)
         {
-            var notSaved = true;
-            var retry = 3;
+            var saved = false;
 
             if (IsNotValidParameter(parameter))
-                return false;
+                return saved;
 
             var funcName = funcSave.Method.Name;
+            var retry = 3;
 
-            while (notSaved && retry-- > 0)
+            while (!saved && retry-- > 0)
             {
                 _logger.LogInformation("Starting Function Name: {funcName}", funcName);
 
-                notSaved = !await funcSave.Invoke(parameter);
+                saved = await funcSave.Invoke(parameter);
 
                 _logger.LogInformation("Finishing Function Name: {funcName}", funcName);
 
-                if (notSaved)
+                if (!saved)
                     Thread.Sleep(threadSlepTimer);
                 else
-                    return true;
+                    return saved;
             }
 
-            return false;
+            return saved;
         }
 
         private bool ReferenceIdValid(params NormalizedDownloadResult[] paramsDownloadResult)
