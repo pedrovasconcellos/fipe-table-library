@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using System.Linq;
 using Vasconcellos.FipeTable.Types.Entities;
 using Vasconcellos.FipeTable.UploadService.Repositories.Interfaces;
 
@@ -16,17 +13,11 @@ namespace Vasconcellos.FipeTable.UploadService.Repositories
     {
         private readonly ILogger _logger;
         private readonly string _connectionString;
-        private static bool bsonWasConfigured = false;
 
         public MongoDBRepository(ILogger logger, string connectionString)
         {
             this._logger = logger;
             this._connectionString = connectionString;
-            if (!bsonWasConfigured)
-            {
-                BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-                bsonWasConfigured = true;
-            }
         }
 
         private IMongoDatabase GetMongoDatabase()
