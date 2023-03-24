@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Vasconcellos.FipeTable.DownloadService.Infra;
 using Vasconcellos.FipeTable.DownloadService.Infra.Interfaces;
 using Vasconcellos.FipeTable.DownloadService.Services;
