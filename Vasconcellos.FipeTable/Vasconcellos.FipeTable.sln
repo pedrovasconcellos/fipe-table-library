@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasconcellos.FipeTable.Types", "Vasconcellos.FipeTable.Types\Vasconcellos.FipeTable.Types.csproj", "{565A7187-5636-4EB2-8ABF-D151CA9D6BB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasconcellos.FipeTable.Types", "Vasconcellos.FipeTable.Types\Vasconcellos.FipeTable.Types.csproj", "{565A7187-5636-4EB2-8ABF-D151CA9D6BB7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasconcellos.FipeTable.UnitTest", "Vasconcellos.FipeTable.UnitTest\Vasconcellos.FipeTable.UnitTest.csproj", "{93EB2E3A-F2AE-4470-8B30-07FA7BFD4FE8}"
 EndProject
@@ -107,5 +107,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8A7FF369-4A8D-4708-A30C-5DEF7B803FCB}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		version = 5.0.0
 	EndGlobalSection
 EndGlobal
