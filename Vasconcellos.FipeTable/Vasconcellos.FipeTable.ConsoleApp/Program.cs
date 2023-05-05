@@ -27,16 +27,16 @@ namespace Vasconcellos.FipeTable.ConsoleApp
         private static IFipeUploadDomain _uploadDomain;
         private static IFipeUploadService _uploadService;
 
-        static async Task Main(string[] args)
+        static int Main(string[] args)
         {
             Init();
             
             _logger.LogInformation("Starting Console FIPE TABLE.");
 
-            await _uploadService.ProcessUpload();
+            _uploadService.ProcessUpload().Wait();
 
             _logger.LogInformation("Finalizing Console FIPE TABLE.");
-            Console.ReadKey();
+            return 0;
         }
 
         private static void Init()
